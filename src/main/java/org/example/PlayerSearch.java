@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+ * Nick Lagges
+ */
+
 public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
     private final static Map<String,String> statToId = new HashMap<>();
