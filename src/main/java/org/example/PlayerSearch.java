@@ -2,10 +2,10 @@ package org.example;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,57 +15,77 @@ import java.util.Map;
 
 public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
-    private final static Map<String,String> statToId = new HashMap<>();
-    private String playerName;
-    private int searchYear;
-    private String URL;
+    private final static Map<String,String> STAT_TO_ID = new HashMap<>();
+    private String NAME;
+    private int YEAR;
+    private Document DOCUMENT;
 
-    public void init(String name, int year) {
-        playerName = name;
-        searchYear = year;
-        URL = pathGetter();
-        statToId.put("targets", "targets");
-        statToId.put("receptions" , "rec");
-        statToId.put("receiving yards", "rec_yds");
-        statToId.put("receiving touchdowns", "rec_td");
-        statToId.put("rushing attempts", "rush_att");
-        statToId.put("rushing yards", "rush_yds");
-        statToId.put("rushing touchdowns", "rush_td");
-        statToId.put("passing completions", "pass_cmp");
-        statToId.put("passing attempts", "pass_att");
-        statToId.put("passing yards", "pass_yds");
-        statToId.put("passing touchdowns", "pass_td");
-        statToId.put("passing interceptions", "pass_int");
-        statToId.put("offensive snaps", "off_pct");
-
+    public void init(String name, int year) throws IOException {
+        NAME = name;
+        YEAR = year;
+        String URL = pathGetter();
+        STAT_TO_ID.put("targets", "targets");
+        STAT_TO_ID.put("receptions" , "rec");
+        STAT_TO_ID.put("receiving yards", "rec_yds");
+        STAT_TO_ID.put("receiving touchdowns", "rec_td");
+        STAT_TO_ID.put("rushing attempts", "rush_att");
+        STAT_TO_ID.put("rushing yards", "rush_yds");
+        STAT_TO_ID.put("rushing touchdowns", "rush_td");
+        STAT_TO_ID.put("passing completions", "pass_cmp");
+        STAT_TO_ID.put("passing attempts", "pass_att");
+        STAT_TO_ID.put("passing yards", "pass_yds");
+        STAT_TO_ID.put("passing touchdowns", "pass_td");
+        STAT_TO_ID.put("passing interceptions", "pass_int");
+        STAT_TO_ID.put("offensive snaps", "off_pct");
+        DOCUMENT = Jsoup.connect(URL).get();
     }
 
-    public ArrayList<Integer> getStat(String statName) throws IOException {
+    public ArrayList<Integer> getStat(String statName) {
         ArrayList<Integer> stat = new ArrayList<>();
         try {
-            Document document = Jsoup.connect(URL).get();
-            String node = "td[data-stat=\"" + statToId.get(statName) + "\"]";
-            String[] statList = document.getElementById("stats").select(node).text().split(" ");
-            //int[] statListInt;
-            for ( String statRecord : statList ) {
+            String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
+            String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
+            for (String statRecord : statList) {
                 stat.add(Integer.valueOf(statRecord));
             }
             stat.removeLast();
             return stat;
-        } catch (IOException e) {
+        } catch (NumberFormatException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private String pathGetter() {
-        String[] nameList = playerName.split(" ");
+    private String pathGetter() throws IOException {
+        String[] nameList = NAME.split(" ");
         StringBuilder path = new StringBuilder()
                 .append(URI)
                 .append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2));
-        if ( playerName.equals("Davante Adams") ) { path.append("01"); }
-        else { path.append("00");}
-        path.append("/gamelog/" + searchYear + "/");
+        path.append(handlePathIssue(path.toString()));
+        path.append("/gamelog/" + YEAR + "/");
         return path.toString();
+    }
+
+    private String handlePathIssue(String path) throws IOException {
+        StringBuilder id = new StringBuilder();
+        try {
+            StringBuilder testURL = new StringBuilder(path);
+            testURL.append("00/gamelog/").append(YEAR).append("/");
+            for (Integer i = 0; i < 10; i++) {
+                for (Integer j = 0; j < 10; j++) {
+                    testURL.deleteCharAt(51);
+                    testURL.deleteCharAt(51);
+                    testURL.insert(51, (i.toString() + j.toString()));
+                    Element responseStatus = Jsoup.connect(testURL.toString()).get().getElementById("stats");
+                    if (responseStatus != null) {
+                        id.append(i).append(j);
+                        return id.toString();
+                    }
+                }
+            }
+        } catch(Exception e) {
+            throw new RuntimeException("not found");
+        }
+        return "not found";
     }
 
 }
