@@ -45,21 +45,22 @@ public class PlayerSearch {
         try {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
             String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
-            for (String statRecord : statList) {
+            for ( String statRecord : statList ) {
                 stat.add(Integer.valueOf(statRecord));
             }
             stat.removeLast();
             return stat;
-        } catch (NumberFormatException e) {
+        } catch ( NumberFormatException e ) {
             throw new RuntimeException(e);
         }
     }
 
     private String pathGetter() throws IOException {
         String[] nameList = NAME.split(" ");
-        StringBuilder path = new StringBuilder()
-                .append(URI)
-                .append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2));
+        StringBuilder path = new StringBuilder().append(URI)
+                ;
+        if (nameList[0].length() > 2 ) { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2)); }
+        else { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + "."); }
         path.append(handlePathIssue(path.toString()));
         path.append("/gamelog/" + YEAR + "/");
         return path.toString();
@@ -70,19 +71,19 @@ public class PlayerSearch {
         try {
             StringBuilder testURL = new StringBuilder(path);
             testURL.append("00/gamelog/").append(YEAR).append("/");
-            for (Integer i = 0; i < 10; i++) {
-                for (Integer j = 0; j < 10; j++) {
+            for ( Integer i = 0; i < 10; i++ ) {
+                for ( Integer j = 0; j < 10; j++ ) {
                     testURL.deleteCharAt(51);
                     testURL.deleteCharAt(51);
                     testURL.insert(51, (i.toString() + j.toString()));
                     Element responseStatus = Jsoup.connect(testURL.toString()).get().getElementById("stats");
-                    if (responseStatus != null) {
+                    if ( responseStatus != null ) {
                         id.append(i).append(j);
                         return id.toString();
                     }
                 }
             }
-        } catch(Exception e) {
+        } catch( Exception e ) {
             throw new RuntimeException("not found");
         }
         return "not found";
