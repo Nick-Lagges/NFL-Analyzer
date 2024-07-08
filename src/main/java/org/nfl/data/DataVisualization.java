@@ -18,10 +18,10 @@ public class DataVisualization extends ApplicationFrame {
     private boolean COMPARE = false;
 
     private String NAME;
-    private Integer YEAR;
-    private String STAT;
+    private final Integer YEAR;
+    private final String STAT;
     private double LINE = 0.0;
-    private int GAME_COUNT;
+    private final int GAME_COUNT;
 
     public DataVisualization( String player1, String player2, Integer year, String stat, int gameCount) throws IOException {
         super("Comparison");
@@ -69,16 +69,14 @@ public class DataVisualization extends ApplicationFrame {
                 new DefaultCategoryDataset( );
 
         if ( COMPARE ) {
-            PlayerSearch player1 = new PlayerSearch();
-            player1.init(PLAYER_1, YEAR);
+            PlayerSearch player1 = new PlayerSearch(PLAYER_1, YEAR);
             ArrayList<Integer> yardsA = player1.getStat(STAT, GAME_COUNT);
             Integer gameA = 1;
             for ( Integer yd : yardsA) {
                 dataset.addValue(yd, PLAYER_1, gameA);
                 gameA++;
             }
-            PlayerSearch player2 = new PlayerSearch();
-            player2.init(PLAYER_2, YEAR);
+            PlayerSearch player2 = new PlayerSearch(PLAYER_2, YEAR);
             ArrayList<Integer> yardsB = player2.getStat(STAT, GAME_COUNT);
             Integer gameB = 1;
             for ( Integer yd : yardsB) {
@@ -87,8 +85,7 @@ public class DataVisualization extends ApplicationFrame {
             }
         }
         else {
-            PlayerSearch newPLayer = new PlayerSearch();
-            newPLayer.init(NAME, YEAR);
+            PlayerSearch newPLayer = new PlayerSearch(NAME, YEAR);
             ArrayList<Integer> yards = newPLayer.getStat(STAT, GAME_COUNT);
             Integer game = 1;
             for ( Integer yd : yards ) {

@@ -16,11 +16,11 @@ import java.util.Map;
 public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
     private final static Map<String,String> STAT_TO_ID = new HashMap<>();
-    private String NAME;
-    private int YEAR;
-    private Document DOCUMENT;
+    private final String NAME;
+    private final int YEAR;
+    private final Document DOCUMENT;
 
-    public void init(String name, int year) throws IOException {
+    public PlayerSearch(String name, int year) throws IOException {
         NAME = name;
         YEAR = year;
         String URL = pathGetter();
@@ -50,8 +50,8 @@ public class PlayerSearch {
             }
             stat.removeLast();
             return stat;
-        } catch ( NumberFormatException e ) {
-            throw new RuntimeException(e);
+        } catch ( Exception e ) {
+            throw new NullPointerException("stat not found");
         }
     }
 
@@ -64,15 +64,14 @@ public class PlayerSearch {
                 stat.add(Integer.valueOf(statList[i]));
             }
             return stat;
-        } catch ( NumberFormatException e ) {
-            throw new RuntimeException(e);
+        } catch ( Exception e ) {
+            throw new NullPointerException("stat not found");
         }
     }
 
     private String pathGetter() throws IOException {
         String[] nameList = NAME.split(" ");
-        StringBuilder path = new StringBuilder().append(URI)
-                ;
+        StringBuilder path = new StringBuilder().append(URI);
         if (nameList[0].length() > 2 ) { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2)); }
         else { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + "."); }
         path.append(handlePathIssue(path.toString()));
@@ -98,7 +97,7 @@ public class PlayerSearch {
                 }
             }
         } catch( Exception e ) {
-            throw new RuntimeException("not found");
+            throw new NullPointerException("player not found");
         }
         return "not found";
     }

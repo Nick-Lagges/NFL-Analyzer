@@ -6,8 +6,7 @@ public class Main {
             //DataVisualization chart = new DataVisualization("Brandon Aiyuk", 2023, "receiving yards", 76.5, 10);
             //chart.start();
 
-            PlayerSearch moore = new PlayerSearch();
-            moore.init("DJ Moore", 2023);
+            PlayerSearch moore = new PlayerSearch("DJ Moore", 2023);
             ModelOne modelOne = new ModelOne(moore);
             System.out.println(modelOne.performModel());
 
