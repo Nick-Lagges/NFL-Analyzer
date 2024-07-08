@@ -55,6 +55,20 @@ public class PlayerSearch {
         }
     }
 
+    public ArrayList<Integer> getStat(String statName, int gameCount) {
+        ArrayList<Integer> stat = new ArrayList<>();
+        try {
+            String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
+            String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
+            for ( int i = statList.length-2; i >= statList.length - gameCount - 1; i-- ) {
+                stat.add(Integer.valueOf(statList[i]));
+            }
+            return stat;
+        } catch ( NumberFormatException e ) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private String pathGetter() throws IOException {
         String[] nameList = NAME.split(" ");
         StringBuilder path = new StringBuilder().append(URI)

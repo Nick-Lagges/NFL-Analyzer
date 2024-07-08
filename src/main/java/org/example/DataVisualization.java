@@ -21,32 +21,16 @@ public class DataVisualization extends ApplicationFrame {
     private Integer YEAR;
     private String STAT;
     private double LINE = 0.0;
+    private int GAME_COUNT;
 
-    public DataVisualization( String playerName, Integer year, String stat ) throws IOException {
-        super(playerName);
-        NAME = playerName;
-        YEAR = year;
-        STAT = stat;
-        JFreeChart barChart = ChartFactory.createBarChart(
-                YEAR.toString(),
-                "game number",
-                STAT,
-                createDataset(),
-                PlotOrientation.VERTICAL,
-                true, true, false);
-
-        ChartPanel chartPanel = new ChartPanel( barChart );
-        chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );
-        setContentPane( chartPanel );
-    }
-
-    public DataVisualization( String player1, String player2, Integer year, String stat) throws IOException {
+    public DataVisualization( String player1, String player2, Integer year, String stat, int gameCount) throws IOException {
         super("Comparison");
         PLAYER_1 = player1;
         PLAYER_2 = player2;
         COMPARE = true;
         YEAR = year;
         STAT = stat;
+        GAME_COUNT = gameCount;
         JFreeChart barChart = ChartFactory.createBarChart(
                 YEAR.toString(),
                 "game number",
@@ -56,16 +40,17 @@ public class DataVisualization extends ApplicationFrame {
                 true, true, false);
 
         ChartPanel chartPanel = new ChartPanel( barChart );
-        chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );
+        chartPanel.setPreferredSize( new java.awt.Dimension( 560 , 367 ) );
         setContentPane( chartPanel );
     }
 
-    public DataVisualization( String playerName, Integer year, String stat, double line) throws IOException {
+    public DataVisualization( String playerName, Integer year, String stat, double line, int gameCount) throws IOException {
         super(playerName);
         NAME = playerName;
         YEAR = year;
         STAT = stat;
         LINE = line;
+        GAME_COUNT = gameCount;
         JFreeChart barChart = ChartFactory.createBarChart(
                 YEAR.toString(),
                 "game number",
@@ -86,7 +71,7 @@ public class DataVisualization extends ApplicationFrame {
         if ( COMPARE ) {
             PlayerSearch player1 = new PlayerSearch();
             player1.init(PLAYER_1, YEAR);
-            ArrayList<Integer> yardsA = player1.getStat(STAT);
+            ArrayList<Integer> yardsA = player1.getStat(STAT, GAME_COUNT);
             Integer gameA = 1;
             for ( Integer yd : yardsA) {
                 dataset.addValue(yd, PLAYER_1, gameA);
@@ -94,7 +79,7 @@ public class DataVisualization extends ApplicationFrame {
             }
             PlayerSearch player2 = new PlayerSearch();
             player2.init(PLAYER_2, YEAR);
-            ArrayList<Integer> yardsB = player2.getStat(STAT);
+            ArrayList<Integer> yardsB = player2.getStat(STAT, GAME_COUNT);
             Integer gameB = 1;
             for ( Integer yd : yardsB) {
                 dataset.addValue(yd, PLAYER_2, gameB);
@@ -104,7 +89,7 @@ public class DataVisualization extends ApplicationFrame {
         else {
             PlayerSearch newPLayer = new PlayerSearch();
             newPLayer.init(NAME, YEAR);
-            ArrayList<Integer> yards = newPLayer.getStat(STAT);
+            ArrayList<Integer> yards = newPLayer.getStat(STAT, GAME_COUNT);
             Integer game = 1;
             for ( Integer yd : yards ) {
                 dataset.addValue(yd, NAME, game);
