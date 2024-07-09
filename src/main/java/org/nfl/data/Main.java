@@ -9,7 +9,7 @@ public class Main {
             PlayerSearch moore = new PlayerSearch("DJ Moore", 2023);
             ModelOne modelOne = new ModelOne(moore);
             System.out.println(modelOne.performModel()); */
-
+            Utils utils = new Utils();
             DefenseSearch team = new DefenseSearch("bears", 2023);
             System.out.println(team.getStatAgainst("receiving touchdowns", "wr"));
 
