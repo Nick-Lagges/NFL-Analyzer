@@ -6,8 +6,7 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import static org.nfl.data.Utils.*;
 
 /*
  * Nick Lagges
@@ -15,7 +14,6 @@ import java.util.Map;
 
 public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
-    private final static Map<String,String> STAT_TO_ID = new HashMap<>();
     private final String NAME;
     private final int YEAR;
     private final Document DOCUMENT;
@@ -24,19 +22,6 @@ public class PlayerSearch {
         NAME = name;
         YEAR = year;
         String URL = pathGetter();
-        STAT_TO_ID.put("targets", "targets");
-        STAT_TO_ID.put("receptions" , "rec");
-        STAT_TO_ID.put("receiving yards", "rec_yds");
-        STAT_TO_ID.put("receiving touchdowns", "rec_td");
-        STAT_TO_ID.put("rushing attempts", "rush_att");
-        STAT_TO_ID.put("rushing yards", "rush_yds");
-        STAT_TO_ID.put("rushing touchdowns", "rush_td");
-        STAT_TO_ID.put("passing completions", "pass_cmp");
-        STAT_TO_ID.put("passing attempts", "pass_att");
-        STAT_TO_ID.put("passing yards", "pass_yds");
-        STAT_TO_ID.put("passing touchdowns", "pass_td");
-        STAT_TO_ID.put("passing interceptions", "pass_int");
-        STAT_TO_ID.put("offensive snaps", "off_pct");
         DOCUMENT = Jsoup.connect(URL).get();
     }
 
