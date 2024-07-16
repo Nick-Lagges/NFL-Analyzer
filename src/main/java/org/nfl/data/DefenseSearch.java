@@ -30,25 +30,11 @@ public class DefenseSearch {
         String url = pathGetter(position);
         try {
             DOCUMENT = Jsoup.connect(url).get();
+            Thread.sleep(1000);
             String statNode = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
             StringBuilder cssQuery = new StringBuilder("a[href=\"/teams/");
             cssQuery.append(TEAM_TO_LOCATOR.get(TEAM.toLowerCase())).append("/").append(YEAR).append(".htm\"]");
-            //DOCUMENT.getElementById("all_fantasy_def").select("a[href=\"/teams/was/2023.htm\"]").text();
             double stat = Double.parseDouble(DOCUMENT.getElementById("all_fantasy_def").select(cssQuery.toString()).parents().get(1).select(statNode).text());
-            return stat;
-        } catch ( Exception e ) {
-            throw new NullPointerException("stat not found");
-        }
-    }
-
-    public ArrayList<Integer> getStat(String statName, int gameCount) {
-        ArrayList<Integer> stat = new ArrayList<>();
-        try {
-            String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
-            String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
-            for ( int i = statList.length-2; i >= statList.length - gameCount - 1; i-- ) {
-                stat.add(Integer.valueOf(statList[i]));
-            }
             return stat;
         } catch ( Exception e ) {
             throw new NullPointerException("stat not found");

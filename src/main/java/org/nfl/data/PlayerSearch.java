@@ -1,11 +1,14 @@
 package org.nfl.data;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
+
 import static org.nfl.data.Utils.*;
 
 /*
@@ -16,13 +19,33 @@ public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
     private final String NAME;
     private final int YEAR;
-    private final Document DOCUMENT;
+    private Document DOCUMENT;
+    private String URL;
+    private Random rand = new Random();
 
-    public PlayerSearch(String name, int year) throws IOException {
+    public PlayerSearch(String name, int year) throws IOException, InterruptedException {
         NAME = name;
         YEAR = year;
-        String URL = pathGetter();
+        URL = pathGetter();
         DOCUMENT = Jsoup.connect(URL).get();
+        //getDoc();
+        Thread.sleep(500 + rand.nextInt(1500));
+    }
+
+    public void getDoc() throws IOException, InterruptedException {
+        String[] proxies = {"proxy1:port", "proxy2:port", "proxy3:port"};
+
+        try {
+            for (int i = 0; i < 100; i++) {
+                String proxy = proxies[i % proxies.length];
+                Connection connection = Jsoup.connect("http://example.com");
+                connection.proxy(proxy.split(":")[0], Integer.parseInt(proxy.split(":")[1]));
+                DOCUMENT = connection.get();
+                Thread.sleep(1000); // Sleep for 1 second between requests
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public ArrayList<Integer> getStat(String statName) {
@@ -36,6 +59,7 @@ public class PlayerSearch {
             stat.removeLast();
             return stat;
         } catch ( Exception e ) {
+            e.printStackTrace();
             throw new NullPointerException("stat not found");
         }
     }
@@ -50,6 +74,7 @@ public class PlayerSearch {
             }
             return stat;
         } catch ( Exception e ) {
+            e.printStackTrace();
             throw new NullPointerException("stat not found");
         }
     }
@@ -82,6 +107,7 @@ public class PlayerSearch {
                 }
             }
         } catch( Exception e ) {
+            e.printStackTrace();
             throw new NullPointerException("player not found");
         }
         return "not found";
