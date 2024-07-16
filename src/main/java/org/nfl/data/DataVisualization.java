@@ -23,7 +23,7 @@ public class DataVisualization extends ApplicationFrame {
     private double LINE = 0.0;
     private final int GAME_COUNT;
 
-    public DataVisualization( String player1, String player2, Integer year, String stat, int gameCount) throws IOException {
+    public DataVisualization( String player1, String player2, Integer year, String stat, int gameCount) throws IOException, InterruptedException {
         super("Comparison");
         PLAYER_1 = player1;
         PLAYER_2 = player2;
@@ -44,7 +44,7 @@ public class DataVisualization extends ApplicationFrame {
         setContentPane( chartPanel );
     }
 
-    public DataVisualization( String playerName, Integer year, String stat, double line, int gameCount) throws IOException {
+    public DataVisualization( String playerName, Integer year, String stat, double line, int gameCount) throws IOException, InterruptedException {
         super(playerName);
         NAME = playerName;
         YEAR = year;
@@ -64,7 +64,7 @@ public class DataVisualization extends ApplicationFrame {
         setContentPane( chartPanel );
     }
 
-    private CategoryDataset createDataset( ) throws IOException {
+    private CategoryDataset createDataset( ) throws IOException, InterruptedException {
         final DefaultCategoryDataset dataset =
                 new DefaultCategoryDataset( );
 
