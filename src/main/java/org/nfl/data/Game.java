@@ -25,8 +25,7 @@ public class Game {
         String[] proxies = {
                 "152.26.229.86:9443",
                 "152.26.229.42:9443",
-                "35.185.196.38:3128",
-                "8.219.97.248:80"
+                "35.185.196.38:3128"
         };
         Random rand = new Random();
         int i = 0;
@@ -42,7 +41,7 @@ public class Game {
                         .proxy(proxyHost, proxyPort)
                         .timeout(10000);// Set a reasonable timeout
 
-                Thread.sleep(rand.nextInt(2000, 5000));
+                Thread.sleep(rand.nextInt(1000, 5000));
                 DOCUMENT = connection.get();
                 System.out.println("Proxy " + proxy + " is valid.");
                 success = true;
@@ -62,6 +61,7 @@ public class Game {
          * Attendance
          * Weather (optional)
          * Vegas Line
+         * Over/Under (optional)
          */
         ArrayList<String> gameMetaInfo = new ArrayList<>();
         String statNode = "td[data-stat=\"stat\"]";
@@ -74,6 +74,7 @@ public class Game {
 
     public ArrayList<ArrayList<String>> getGameStats() {
         /*
+         * home stats, visitor stats
          * First Downs
          * Rush-Yds-TDs
          * Cmp-Att-Yd-TD-INT

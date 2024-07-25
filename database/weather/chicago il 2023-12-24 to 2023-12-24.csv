@@ -1,0 +1,2 @@
+name,datetime,tempmax,tempmin,temp,feelslikemax,feelslikemin,feelslike,dew,humidity,precip,precipprob,precipcover,preciptype,snow,snowdepth,windgust,windspeed,winddir,sealevelpressure,cloudcover,visibility,solarradiation,solarenergy,uvindex,severerisk,sunrise,sunset,moonphase,conditions,description,icon,stations
+chicago il,2023-12-24,55.8,49.6,51.9,55.8,46.5,51.5,48.9,89.6,0,0,0,,0,0,20.8,11.5,153,1020.6,93,4.9,19,1.6,1,10,2023-12-24T07:16:16,2023-12-24T16:24:02,0.42,Overcast,Cloudy skies throughout the day.,cloudy,"72534014819,KORD,KMDW,72530094846,F1983,74466504838,KPWK"

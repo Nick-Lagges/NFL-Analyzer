@@ -14,12 +14,14 @@ public class Team {
     private String URI = "https://www.pro-football-reference.com/teams/";
     private String URL;
     private Document DOCUMENT;
+    public ArrayList<Game> TEAM_GAMES;
 
-    public Team(String name, Integer year) throws IOException {
+    public Team(String name, Integer year) throws IOException, InterruptedException {
         NAME = name;
         YEAR = year;
         URL = pathGetter();
         DOCUMENT = Jsoup.connect(URL).get();
+        TEAM_GAMES = getGames();
     }
 
     private ArrayList<String> getGameURLs() {
