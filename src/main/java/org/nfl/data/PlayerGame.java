@@ -19,6 +19,23 @@ public class PlayerGame {
     public String FIELD;
     public String OFF_SNAP;
 
+    private String homeTeam;
+    private String date;
+    private double temperature;
+    private double dewPoint;
+    private double humidity;
+    private double heatIndex;
+    private double windSpeed;
+    private double windGust;
+    private double windDirection;
+    private double windChill;
+    private double precipitation;
+    private double snowDepth;
+    private double visibility;
+    private double cloudCover;
+    private String weatherType;
+    private String conditions;
+
     public PlayerGame() {
     }
 

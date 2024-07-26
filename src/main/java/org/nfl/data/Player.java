@@ -30,14 +30,14 @@ public class Player {
             FileReader filereader;
             if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                 seasonStats = new WRSeasonStats();
-                filereader = new FileReader(Utils.RECEIVING);
+                filereader = new FileReader(Utils.RECEIVING23);
             } else if ( POSITION.equals("QB") ) {
                 seasonStats = new QBSeasonStats();
-                filereader = new FileReader(Utils.PASSING);
+                filereader = new FileReader(Utils.PASSING23);
             }
             else {
                 seasonStats = new RBSeasonStats();
-                filereader = new FileReader(Utils.RUSHING);
+                filereader = new FileReader(Utils.RUSHING23);
             }
             // create csvReader object passing
             // file reader as a parameter
