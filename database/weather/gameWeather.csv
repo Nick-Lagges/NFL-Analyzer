@@ -1,4 +1,4 @@
-name,Date time,Temperature,Dew Point,Relative Humidity,Heat Index,Wind Speed,Wind Gust,Wind Direction,Wind Chill,Precipitation,Precipitation Cover,Snow Depth,Visibility,Cloud Cover,Sea Level Pressure,Weather Type,Latitude,Longitude,Conditions
+homeTeam,dateTime,temperature,dewPoint,humidity,heatIndex,windSpeed,windGust,windDirection,windChill,precipitation,precipitationCover,snowDepth,visibility,cloudCover,seaLevelPressure,weatherType,latitude,longitude,conditions
 ravens,09/10/2023 13:00:00,80.4,70.6,72.06,83.9,1.7,,58.0,,0.0,,,9.9,85.1,1017.8,,39.278088,-76.623322,Overcast
 ravens,09/24/2023 13:00:00,65.9,64.2,94.49,,4.5,,44.0,,0.02,,,8.5,100.0,1011.0,,39.278088,-76.623322,"Rain, Overcast"
 ravens,10/22/2023 13:00:00,62.5,36.1,37.27,,18.5,30.5,307.0,,0.0,,,9.9,52.0,1007.9,,39.278088,-76.623322,Partially cloudy
