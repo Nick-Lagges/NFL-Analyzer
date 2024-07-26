@@ -15,7 +15,7 @@ public class Main {
             Utils util = new Utils();
             Player moore = new Player("kyler murray");
             for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
-                System.out.println( "week: " + game.getOPPONENT() + " : " + game.getTemperature() + " : " + game.getFeelsLike());
+                System.out.println( "week: " + game.getOPPONENT() + " : " + game.getTemperature() + " : " + game.getFeelsLike() + " : " + game.getPASS_YD());
             }
             //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
             //System.out.println(moore.getStatString("location"));

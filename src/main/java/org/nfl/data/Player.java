@@ -120,6 +120,7 @@ public class Player {
         ArrayList<String> DATE = playerSearch.getStatString("date");
         ArrayList<String> OPPONENT = playerSearch.getStatString("opponent");
         ArrayList<String> AGE = playerSearch.getStatString("age");
+        AGE.removeLast();
         ArrayList<String> LOCATION = playerSearch.getStatString("location");
         ArrayList<Integer> WEEK = playerSearch.getStat("week");
         ArrayList<Integer> TAR = null;
@@ -158,7 +159,7 @@ public class Player {
         }
         int gamesMissed = 0;
         int i = 0;
-        for ( int j = 0; j < AGE.size(); j++ ){
+        for ( int j = 0; j < WEEK.size(); j++ ){
             PlayerGame playerGame = new PlayerGame();
             playerGame.setDate(DATE.get(j));
             playerGame.setOPPONENT(OPPONENT.get(j));

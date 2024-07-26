@@ -46,7 +46,7 @@ public class PlayerSearch {
         ArrayList<String> stat = new ArrayList<>();
         try {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
-            if (statName.equals("location") ) {
+            if (statName.equals("location") || statName.equals("age") ) {
                 Elements elements = DOCUMENT.getElementById("stats").select(node);
                 for (int a = 0; a < elements.size(); a++) {
                     stat.add(elements.get(a).text());

@@ -35,6 +35,7 @@ public class Utils {
         STAT_TO_ID.put("location", "game_location");
         STAT_TO_ID.put("date", "game_date");
         STAT_TO_ID.put("team", "team");
+        STAT_TO_ID.put("reason", "reason");
 
         TEAM_TO_LOCATOR.put("commanders", "was");
         TEAM_TO_LOCATOR.put("eagles", "phi");
@@ -82,6 +83,7 @@ public class Utils {
         ABBR_TO_TEAM.put("det", "lions");
         ABBR_TO_TEAM.put("gnb", "packers");
         ABBR_TO_TEAM.put("htx", "texans");
+        ABBR_TO_TEAM.put("hou", "texans");
         ABBR_TO_TEAM.put("ind", "colts");
         ABBR_TO_TEAM.put("jax", "jaguars");
         ABBR_TO_TEAM.put("kan", "chiefs");
