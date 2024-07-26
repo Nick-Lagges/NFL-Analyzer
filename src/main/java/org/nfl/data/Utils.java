@@ -6,10 +6,10 @@ import java.util.Map;
 public class Utils {
     public final static Map<String,String> STAT_TO_ID = new HashMap<>();
     public final static Map<String,String> TEAM_TO_LOCATOR = new HashMap<>();
-    public final static String RECEIVING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Receiving2023.csv";
-    public final static String PASSING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Passing2023.csv";
-    public final static String RUSHING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Rushing2023.csv";
-    public final static String DEFENSE = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Defense2023.csv";
+    public final static String RECEIVING = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2023.csv";
+    public final static String PASSING = System.getProperty("user.dir") + "\\database\\statistics\\Passing2023.csv";
+    public final static String RUSHING = System.getProperty("user.dir") + "\\database\\statistics\\Rushing2023.csv";
+    public final static String DEFENSE = System.getProperty("user.dir") + "\\database\\statistics\\Defense2023.csv";
 
     public Utils() {
         STAT_TO_ID.put("targets", "targets");
