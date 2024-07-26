@@ -13,10 +13,15 @@ public class Main {
             System.out.println(team.getStatAgainst("passing touchdowns", "qb"));*/
 
             Utils util = new Utils();
-            Player moore = new Player("kyler murray");
+            DefenseStats season = new DefenseStats(2023);
+            for ( TeamDefense team : season.getNFL_DEFENSES() ){
+                System.out.println(team.getTeamName() + " : " + team.getRushAttPG());
+            }
+            /*Player moore = new Player("kyler murray");
             for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
                 System.out.println( "week: " + game.getOPPONENT() + " : " + game.getTemperature() + " : " + game.getFeelsLike() + " : " + game.getPASS_YD());
             }
+             */
             //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
             //System.out.println(moore.getStatString("location"));
             //System.out.println(moore.getStatString("age"));

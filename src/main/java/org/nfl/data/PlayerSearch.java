@@ -32,7 +32,7 @@ public class PlayerSearch {
         DOCUMENT = Jsoup.connect(URL).get();
         POSITION_INFO = getPosition();
         TEAM = Utils.ABBR_TO_TEAM.get(getStatString("team").getFirst().toLowerCase());
-        Thread.sleep(500 + rand.nextInt(1500));
+        //Thread.sleep(500 + rand.nextInt(1500));
     }
 
     private String getPosition() {
