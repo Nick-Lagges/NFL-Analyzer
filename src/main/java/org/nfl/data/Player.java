@@ -7,9 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<String> SEASON_STATS = new ArrayList<>();
+    private PlayerSeasonStats seasonStats;
     private ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
-    private ArrayList<PlayerGame> GAME_LOG = new ArrayList<>();
+    private PlayerGameLog GAME_LOG = new PlayerGameLog();
     private String NAME;
     private String POSITION;
     private String TEAM;
@@ -19,10 +19,8 @@ public class Player {
         NAME = name;
         playerSearch = new PlayerSearch(name, 2023);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
-        generateSeasonStats();
         String[] teamArray = playerSearch.TEAM.split(" ");
         TEAM = teamArray[teamArray.length-1];
-        generateGameLog();
     }
 
     public void generateSeasonStats(){
@@ -31,11 +29,14 @@ public class Player {
             // class with CSV file as a parameter.
             FileReader filereader;
             if ( POSITION.equals("WR") ) {
+                seasonStats = new WRSeasonStats();
                 filereader = new FileReader(Utils.RECEIVING);
             } else if ( POSITION.equals("QB") ) {
+                seasonStats = new RBSeasonStats();
                 filereader = new FileReader(Utils.PASSING);
             }
             else {
+                seasonStats = new QBSeasonStats();
                 filereader = new FileReader(Utils.RUSHING);
             }
             // create csvReader object passing
@@ -46,8 +47,28 @@ public class Player {
             while ( (nextRecord = csvReader.readNext()) != null ) {
                 if ( ! nextRecord[1].contains(NAME) ) continue;
                 else{
-                    for (String cell : nextRecord) {
-                        SEASON_STATS.add(cell);
+                    seasonStats.setRank(nextRecord[0]);
+                    seasonStats.setPlayer(nextRecord[1]);
+                    seasonStats.setTeam(nextRecord[2]);
+                    seasonStats.setAge(nextRecord[3]);
+                    seasonStats.setPosition(nextRecord[4]);
+                    seasonStats.setGames(nextRecord[5]);
+                    seasonStats.setGamesStarted(nextRecord[6]);
+                    if ( POSITION.equals("WR") ) {
+                        seasonStats.setTargets(Integer.valueOf(nextRecord[7]));
+                        seasonStats.setReceptions(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setCatchPct(nextRecord[9]);
+                        seasonStats.setYards(Integer.valueOf(nextRecord[10]));
+                        seasonStats.setYpr(Double.valueOf(nextRecord[11]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[13]));
+                        seasonStats.setSuccessPct(nextRecord[14]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[15]));
+                        seasonStats.setYpt(Double.valueOf(nextRecord[16]));
+                        seasonStats.setRpg(Double.valueOf(nextRecord[17]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[18]));
+                        seasonStats.setFumbles(Integer.valueOf(nextRecord[19]));
+                        seasonStats.setId(nextRecord[20]);
                     }
                 }
             }
@@ -142,15 +163,17 @@ public class Player {
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 i++;
             }
-            GAME_LOG.add(playerGame);
+            GAME_LOG.addGame(playerGame);
         }
     }
 
-    public ArrayList<PlayerGame> getGAME_LOG() {
+    public PlayerGameLog getGAME_LOG() {
+        if ( GAME_LOG.GAME_LOG.isEmpty() ) generateGameLog();
         return GAME_LOG;
     }
 
-    public ArrayList<String> getSEASON_STATS() {
-        return SEASON_STATS;
+    public PlayerSeasonStats getSEASON_STATS() {
+        if ( seasonStats == null ) generateSeasonStats();
+        return seasonStats;
     }
 }
