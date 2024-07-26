@@ -19,33 +19,6 @@ public class Team {
     public Team(String name, Integer year) throws IOException, InterruptedException {
         NAME = name;
         YEAR = year;
-        URL = pathGetter();
-        DOCUMENT = Jsoup.connect(URL).get();
-        TEAM_GAMES = getGames();
     }
 
-    private ArrayList<String> getGameURLs() {
-        ArrayList<String> gameURLs = new ArrayList<>();
-        for (int i = 0; i < DOCUMENT.getElementById("games").select("a").size(); i++) {
-            if ( i%2 == 0 ) {
-                gameURLs.add(DOCUMENT.getElementById("games").select("a").get(i).attributes().toString().split("\"")[1]);
-            }
-        }
-        Jsoup.parse(DOCUMENT.getElementById("games").text());
-        return gameURLs;
-    }
-
-    public ArrayList<Game> getGames() throws IOException, InterruptedException {
-        ArrayList<Game> seasonGames = new ArrayList<>();
-        for ( String url : getGameURLs() ) {
-            seasonGames.add(new Game(url));
-        }
-        return seasonGames;
-    }
-
-    private String pathGetter() {
-        StringBuilder path = new StringBuilder(URI);
-        path.append(TEAM_TO_LOCATOR.get(NAME)).append("/").append(YEAR).append(".htm");
-        return path.toString();
-    }
 }

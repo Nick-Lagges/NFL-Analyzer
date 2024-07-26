@@ -1,6 +1,5 @@
 package org.nfl.data;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -19,8 +18,10 @@ public class PlayerSearch {
     private final static String URI = "https://pro-football-reference.com/players/";
     private final String NAME;
     private final int YEAR;
+    public String POSITION_INFO;
     private Document DOCUMENT;
     private String URL;
+    public String TEAM;
     private Random rand = new Random();
 
     public PlayerSearch(String name, int year) throws IOException, InterruptedException {
@@ -28,23 +29,37 @@ public class PlayerSearch {
         YEAR = year;
         URL = pathGetter();
         DOCUMENT = Jsoup.connect(URL).get();
-        //getDoc();
+        POSITION_INFO = getPosition();
+        TEAM = getTeam();
         Thread.sleep(500 + rand.nextInt(1500));
     }
 
-    public void getDoc() throws IOException, InterruptedException {
-        String[] proxies = {"proxy1:port", "proxy2:port", "proxy3:port"};
+    private String getPosition() {
+        String positionInfo;
+        positionInfo = DOCUMENT.getElementById("meta").select("p").get(1).text();
+        return positionInfo;
+    }
 
+    private String getTeam() {
+        String team;
+        team = DOCUMENT.getElementById("meta").select("p").get(3).text();
+        return team;
+    }
+
+
+    public ArrayList<String> getStatString(String statName) {
+        ArrayList<String> stat = new ArrayList<>();
         try {
-            for (int i = 0; i < 100; i++) {
-                String proxy = proxies[i % proxies.length];
-                Connection connection = Jsoup.connect("http://example.com");
-                connection.proxy(proxy.split(":")[0], Integer.parseInt(proxy.split(":")[1]));
-                DOCUMENT = connection.get();
-                Thread.sleep(1000); // Sleep for 1 second between requests
+            String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
+            String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
+            for ( String statRecord : statList ) {
+                stat.add(statRecord);
             }
-        } catch (Exception e) {
+            stat.removeLast();
+            return stat;
+        } catch ( Exception e ) {
             e.printStackTrace();
+            throw new NullPointerException("stat not found");
         }
     }
 

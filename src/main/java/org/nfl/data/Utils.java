@@ -6,6 +6,10 @@ import java.util.Map;
 public class Utils {
     public final static Map<String,String> STAT_TO_ID = new HashMap<>();
     public final static Map<String,String> TEAM_TO_LOCATOR = new HashMap<>();
+    public final static String RECEIVING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Receiving2023.csv";
+    public final static String PASSING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Passing2023.csv";
+    public final static String RUSHING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Rushing2023.csv";
+    public final static String DEFENSE = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Defense2023.csv";
 
     public Utils() {
         STAT_TO_ID.put("targets", "targets");
@@ -21,6 +25,10 @@ public class Utils {
         STAT_TO_ID.put("passing touchdowns", "pass_td");
         STAT_TO_ID.put("passing interceptions", "pass_int");
         STAT_TO_ID.put("offensive snaps", "off_pct");
+        STAT_TO_ID.put("opponent", "opp");
+        STAT_TO_ID.put("week", "week_num");
+        STAT_TO_ID.put("age", "age");
+        STAT_TO_ID.put("location", "game_location");
 
         TEAM_TO_LOCATOR.put("commanders", "was");
         TEAM_TO_LOCATOR.put("eagles", "phi");
