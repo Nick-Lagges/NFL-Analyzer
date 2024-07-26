@@ -28,7 +28,7 @@ public class Player {
             // Create an object of filereader
             // class with CSV file as a parameter.
             FileReader filereader;
-            if ( POSITION.equals("WR") ) {
+            if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                 seasonStats = new WRSeasonStats();
                 filereader = new FileReader(Utils.RECEIVING);
             } else if ( POSITION.equals("QB") ) {
@@ -49,11 +49,11 @@ public class Player {
                     seasonStats.setRank(nextRecord[0]);
                     seasonStats.setPlayer(nextRecord[1]);
                     seasonStats.setTeam(nextRecord[2]);
-                    seasonStats.setAge(nextRecord[3]);
+                    seasonStats.setAge(Integer.valueOf(nextRecord[3]));
                     seasonStats.setPosition(nextRecord[4]);
-                    seasonStats.setGames(nextRecord[5]);
-                    seasonStats.setGamesStarted(nextRecord[6]);
-                    if ( POSITION.equals("WR") ) {
+                    seasonStats.setGames(Integer.valueOf(nextRecord[5]));
+                    seasonStats.setGamesStarted(Integer.valueOf(nextRecord[6]));
+                    if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                         seasonStats.setTargets(Integer.valueOf(nextRecord[7]));
                         seasonStats.setReceptions(Integer.valueOf(nextRecord[8]));
                         seasonStats.setCatchPct(nextRecord[9]);
@@ -133,7 +133,7 @@ public class Player {
         ArrayList<Integer> PASS_COMP = null;
         ArrayList<Integer> PASS_YD = null;
         ArrayList<Integer> PASS_INT = null;
-        if ( POSITION.equals("WR") ) {
+        if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
             TAR = playerSearch.getStat("targets");
             REC = playerSearch.getStat("receptions");
             REC_YD = playerSearch.getStat("receiving yards");
@@ -181,7 +181,7 @@ public class Player {
                 gamesMissed++;
             }
             else {
-                if ( POSITION.equals("WR") ) {
+                if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                     playerGame.setTAR(TAR.get(i));
                     playerGame.setREC(REC.get(i));
                     playerGame.setREC_YD(REC_YD.get(i));

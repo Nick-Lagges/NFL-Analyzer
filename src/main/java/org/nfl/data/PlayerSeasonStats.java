@@ -13,10 +13,10 @@ public class PlayerSeasonStats {
     }
 
     public String team;
-    public String age;
+    public int age;
     public String position;
-    public String games;
-    public String gamesStarted;
+    public int games;
+    public int gamesStarted;
 
     public PlayerSeasonStats(){}
 
@@ -36,11 +36,11 @@ public class PlayerSeasonStats {
         this.team = team;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(String age) {
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -52,19 +52,19 @@ public class PlayerSeasonStats {
         this.position = position;
     }
 
-    public String getGames() {
+    public int getGames() {
         return games;
     }
 
-    public void setGames(String games) {
+    public void setGames(int games) {
         this.games = games;
     }
 
-    public String getGamesStarted() {
+    public int getGamesStarted() {
         return gamesStarted;
     }
 
-    public void setGamesStarted(String gamesStarted) {
+    public void setGamesStarted(int gamesStarted) {
         this.gamesStarted = gamesStarted;
     }
 
