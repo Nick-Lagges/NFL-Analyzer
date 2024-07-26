@@ -19,8 +19,7 @@ public class Player {
         NAME = name;
         playerSearch = new PlayerSearch(NAME, 2023);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
-        String[] teamArray = playerSearch.TEAM.split(" ");
-        TEAM = teamArray[teamArray.length-1];
+        TEAM = playerSearch.TEAM;
     }
 
     public void generateSeasonStats(){
@@ -108,6 +107,7 @@ public class Player {
                         seasonStats.setFumbles(Integer.valueOf(nextRecord[15]));
                         seasonStats.setId(nextRecord[16]);
                     }
+                    break;
                 }
             }
         }
@@ -116,9 +116,11 @@ public class Player {
         }
     }
 
-    public void generateGameLog() {
+    public void generateGameLog() throws IOException {
+        ArrayList<String> DATE = playerSearch.getStatString("date");
         ArrayList<String> OPPONENT = playerSearch.getStatString("opponent");
         ArrayList<String> AGE = playerSearch.getStatString("age");
+        AGE.removeLast();
         ArrayList<String> LOCATION = playerSearch.getStatString("location");
         ArrayList<Integer> WEEK = playerSearch.getStat("week");
         ArrayList<Integer> TAR = null;
@@ -157,8 +159,9 @@ public class Player {
         }
         int gamesMissed = 0;
         int i = 0;
-        for ( int j = 0; j < AGE.size(); j++ ){
+        for ( int j = 0; j < WEEK.size(); j++ ){
             PlayerGame playerGame = new PlayerGame();
+            playerGame.setDate(DATE.get(j));
             playerGame.setOPPONENT(OPPONENT.get(j));
             playerGame.setWEEK(WEEK.get(j));
             playerGame.setHomeOrAway(LOCATION.get(j));
@@ -201,11 +204,14 @@ public class Player {
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 i++;
             }
+            if ( playerGame.getHomeORAway().equals("home") ) playerGame.setHomeTeam(TEAM);
+            else playerGame.setHomeTeam(Utils.ABBR_TO_TEAM.get(playerGame.getOPPONENT()));
+            playerGame.generateWeather();
             GAME_LOG.addGame(playerGame);
         }
     }
 
-    public PlayerGameLog getGAME_LOG() {
+    public PlayerGameLog getGAME_LOG() throws IOException {
         if ( GAME_LOG.GAME_LOG.isEmpty() ) generateGameLog();
         return GAME_LOG;
     }

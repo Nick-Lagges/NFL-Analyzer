@@ -13,8 +13,10 @@ public class Main {
             System.out.println(team.getStatAgainst("passing touchdowns", "qb"));*/
 
             Utils util = new Utils();
-            Player moore = new Player("Travis Kelce");
-            System.out.println( (moore.getSEASON_STATS().getTargets() / moore.getSEASON_STATS().getGames()) );
+            Player moore = new Player("kyler murray");
+            for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
+                System.out.println( "week: " + game.getOPPONENT() + " : " + game.getTemperature() + " : " + game.getFeelsLike() + " : " + game.getPASS_YD());
+            }
             //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
             //System.out.println(moore.getStatString("location"));
             //System.out.println(moore.getStatString("age"));

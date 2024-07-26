@@ -31,7 +31,7 @@ public class PlayerSearch {
         URL = pathGetter();
         DOCUMENT = Jsoup.connect(URL).get();
         POSITION_INFO = getPosition();
-        TEAM = getTeam();
+        TEAM = Utils.ABBR_TO_TEAM.get(getStatString("team").getFirst().toLowerCase());
         Thread.sleep(500 + rand.nextInt(1500));
     }
 
@@ -41,18 +41,12 @@ public class PlayerSearch {
         return positionInfo;
     }
 
-    private String getTeam() {
-        String team;
-        team = DOCUMENT.getElementById("meta").select("p").get(3).text();
-        return team;
-    }
-
 
     public ArrayList<String> getStatString(String statName) {
         ArrayList<String> stat = new ArrayList<>();
         try {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
-            if (statName.equals("location") ) {
+            if (statName.equals("location") || statName.equals("age") ) {
                 Elements elements = DOCUMENT.getElementById("stats").select(node);
                 for (int a = 0; a < elements.size(); a++) {
                     stat.add(elements.get(a).text());
