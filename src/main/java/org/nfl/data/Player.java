@@ -44,9 +44,7 @@ public class Player {
             String[] nextRecord;
             // we are going to read data line by line
             while ( (nextRecord = csvReader.readNext()) != null ) {
-                if ( ! nextRecord.toString().contains(NAME) ){
-                    continue;
-                }
+                if ( ! nextRecord[1].contains(NAME) ) continue;
                 else{
                     for (String cell : nextRecord) {
                         SEASON_STATS.add(cell);

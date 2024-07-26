@@ -14,7 +14,7 @@ public class Main {
 
             Utils util = new Utils();
             Player moore = new Player("Brandon Aiyuk");
-            System.out.println(moore.getGAME_LOG().get(0).getREC());
+            System.out.println(moore.getSEASON_STATS());
             //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
             //System.out.println(moore.getStatString("location"));
             //System.out.println(moore.getStatString("age"));
