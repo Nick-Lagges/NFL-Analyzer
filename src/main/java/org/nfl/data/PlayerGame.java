@@ -16,6 +16,11 @@ public class PlayerGame {
     public int PASS_COMP;
     public int PASS_YD;
     public int PASS_INT;
+    public String FIELD;
+    public String OFF_SNAP;
+
+    public PlayerGame() {
+    }
 
     public String getHomeORAway() {
         return FIELD;
@@ -23,12 +28,6 @@ public class PlayerGame {
 
     public void setHomeOrAway(String FIELD) {
         this.FIELD = FIELD;
-    }
-
-    public String FIELD;
-    public double OFF_SNAP;
-
-    public PlayerGame() {
     }
 
     public int getWEEK() {
@@ -143,11 +142,11 @@ public class PlayerGame {
         this.PASS_INT = PASS_INT;
     }
 
-    public double getOFF_SNAP() {
+    public String getOFF_SNAP() {
         return OFF_SNAP;
     }
 
-    public void setOFF_SNAP(double OFF_SNAP) {
+    public void setOFF_SNAP(String OFF_SNAP) {
         this.OFF_SNAP = OFF_SNAP;
     }
 }

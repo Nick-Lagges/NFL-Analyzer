@@ -7,16 +7,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<String> SEASON_STATS;
-    private ArrayList<String[]> SEASON_WEATHER;
-    private ArrayList<PlayerGame> GAME_LOG;
+    private ArrayList<String> SEASON_STATS = new ArrayList<>();
+    private ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
+    private ArrayList<PlayerGame> GAME_LOG = new ArrayList<>();
     private String NAME;
+    private String POSITION;
     private String TEAM;
     private PlayerSearch playerSearch;
 
     public Player(String name) throws IOException, InterruptedException {
         NAME = name;
         playerSearch = new PlayerSearch(name, 2023);
+        POSITION = playerSearch.POSITION_INFO.split(" ")[1];
         generateSeasonStats();
         String[] teamArray = playerSearch.TEAM.split(" ");
         TEAM = teamArray[teamArray.length-1];
@@ -28,9 +30,9 @@ public class Player {
             // Create an object of filereader
             // class with CSV file as a parameter.
             FileReader filereader;
-            if ( playerSearch.POSITION_INFO.contains("WR") ) {
+            if ( POSITION.equals("WR") ) {
                 filereader = new FileReader(Utils.RECEIVING);
-            } else if ( playerSearch.POSITION_INFO.contains("QB") ) {
+            } else if ( POSITION.equals("QB") ) {
                 filereader = new FileReader(Utils.PASSING);
             }
             else {
@@ -62,19 +64,35 @@ public class Player {
         ArrayList<String> AGE = playerSearch.getStatString("age");
         ArrayList<String> LOCATION = playerSearch.getStatString("location");
         ArrayList<Integer> WEEK = playerSearch.getStat("week");
-        ArrayList<Integer> TAR = playerSearch.getStat("targets");
-        ArrayList<Integer> REC = playerSearch.getStat("receptions");
-        ArrayList<Integer> REC_YD = playerSearch.getStat("receiving yards");
-        ArrayList<Integer> REC_TD = playerSearch.getStat("receiving touchdowns");
-        ArrayList<Integer> RUSH_ATT = playerSearch.getStat("rushing attempts");
-        ArrayList<Integer> RUSH_YD = playerSearch.getStat("rushing yards");
-        ArrayList<Integer> RUSH_TD = playerSearch.getStat("rushing touchdowns");
-        ArrayList<Integer> PASS_TD = playerSearch.getStat("passing touchdowns");
-        ArrayList<Integer> PASS_ATT = playerSearch.getStat("passing attempts");
-        ArrayList<Integer> PASS_COMP = playerSearch.getStat("passing completions");
-        ArrayList<Integer> PASS_YD = playerSearch.getStat("passing yards");
-        ArrayList<Integer> PASS_INT = playerSearch.getStat("passing interceptions");
-        ArrayList<Integer> OFF_SNAP = playerSearch.getStat("offensive snaps");
+        ArrayList<Integer> TAR = null;
+        ArrayList<Integer> REC = null;
+        ArrayList<Integer> REC_YD = null;
+        ArrayList<Integer> REC_TD = null;
+        ArrayList<Integer> RUSH_ATT = null;
+        ArrayList<Integer> RUSH_YD = null;
+        ArrayList<Integer> RUSH_TD = null;
+        ArrayList<Integer> PASS_TD = null;
+        ArrayList<Integer> PASS_ATT = null;
+        ArrayList<Integer> PASS_COMP = null;
+        ArrayList<Integer> PASS_YD = null;
+        ArrayList<Integer> PASS_INT = null;
+        if ( POSITION.equals("WR") ) {
+            TAR = playerSearch.getStat("targets");
+            REC = playerSearch.getStat("receptions");
+            REC_YD = playerSearch.getStat("receiving yards");
+            REC_TD = playerSearch.getStat("receiving touchdowns");
+        } else if ( POSITION.equals("RB") ) {
+            RUSH_ATT = playerSearch.getStat("rushing attempts");
+            RUSH_YD = playerSearch.getStat("rushing yards");
+            RUSH_TD = playerSearch.getStat("rushing touchdowns");
+        } else if ( POSITION.equals("QB") ) {
+            PASS_TD = playerSearch.getStat("passing touchdowns");
+            PASS_ATT = playerSearch.getStat("passing attempts");
+            PASS_COMP = playerSearch.getStat("passing completions");
+            PASS_YD = playerSearch.getStat("passing yards");
+            PASS_INT = playerSearch.getStat("passing interceptions");
+        }
+        ArrayList<String> OFF_SNAP = playerSearch.getStatString("offensive snaps");
 
         for ( int x = 0; x < LOCATION.size(); x++ ) {
             if ( LOCATION.get(x).isEmpty() ) {LOCATION.set(x, "home"); }
@@ -102,24 +120,27 @@ public class Player {
                 playerGame.setPASS_COMP(-1);
                 playerGame.setPASS_YD(-1);
                 playerGame.setPASS_INT(-1);
-                playerGame.setOFF_SNAP(-1.0);
+                playerGame.setOFF_SNAP("-1.0%");
                 gamesMissed++;
             }
             else {
-                playerGame.setTAR(TAR.get(i));
-                playerGame.setREC(REC.get(i));
-                playerGame.setREC_YD(REC_YD.get(i));
-                playerGame.setREC_TD(REC_TD.get(i));
-                playerGame.setPASS_ATT(PASS_ATT.get(i));
-                playerGame.setPASS_COMP(PASS_COMP.get(i));
-                playerGame.setRUSH_ATT(RUSH_ATT.get(i));
-                playerGame.setRUSH_YD(RUSH_YD.get(i));
-                playerGame.setRUSH_TD(RUSH_TD.get(i));
-                playerGame.setPASS_TD(PASS_TD.get(i));
-                playerGame.setPASS_ATT(PASS_ATT.get(i));
-                playerGame.setPASS_COMP(PASS_COMP.get(i));
-                playerGame.setPASS_YD(PASS_YD.get(i));
-                playerGame.setPASS_INT(PASS_INT.get(i));
+                if ( POSITION.equals("WR") ) {
+                    playerGame.setTAR(TAR.get(i));
+                    playerGame.setREC(REC.get(i));
+                    playerGame.setREC_YD(REC_YD.get(i));
+                    playerGame.setREC_TD(REC_TD.get(i));
+                } else if ( POSITION.equals("RB") ) {
+                    playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                    playerGame.setRUSH_YD(RUSH_YD.get(i));
+                    playerGame.setRUSH_TD(RUSH_TD.get(i));
+                }
+                else if ( POSITION.equals("QB") ) {
+                    playerGame.setPASS_TD(PASS_TD.get(i));
+                    playerGame.setPASS_ATT(PASS_ATT.get(i));
+                    playerGame.setPASS_COMP(PASS_COMP.get(i));
+                    playerGame.setPASS_YD(PASS_YD.get(i));
+                    playerGame.setPASS_INT(PASS_INT.get(i));
+                }
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 i++;
             }

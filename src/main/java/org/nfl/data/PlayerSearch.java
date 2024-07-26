@@ -3,6 +3,7 @@ package org.nfl.data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -51,11 +52,18 @@ public class PlayerSearch {
         ArrayList<String> stat = new ArrayList<>();
         try {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
-            String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
-            for ( String statRecord : statList ) {
-                stat.add(statRecord);
+            if (statName.equals("location") ) {
+                Elements elements = DOCUMENT.getElementById("stats").select(node);
+                for (int a = 0; a < elements.size(); a++) {
+                    stat.add(elements.get(a).text());
+                }
             }
-            stat.removeLast();
+            else {
+                String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
+                for (String statRecord : statList) {
+                    stat.add(statRecord);
+                }
+            }
             return stat;
         } catch ( Exception e ) {
             e.printStackTrace();
@@ -71,7 +79,7 @@ public class PlayerSearch {
             for ( String statRecord : statList ) {
                 stat.add(Integer.valueOf(statRecord));
             }
-            stat.removeLast();
+            if ( ! statName.equals("week") ){ stat.removeLast(); }
             return stat;
         } catch ( Exception e ) {
             e.printStackTrace();
