@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 public class Player {
     private PlayerSeasonStats seasonStats;
-    private ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
-    private PlayerGameLog GAME_LOG = new PlayerGameLog();
-    private String NAME;
-    private String POSITION;
-    private String TEAM;
-    private PlayerSearch playerSearch;
+    private final ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
+    private final PlayerGameLog GAME_LOG = new PlayerGameLog();
+    private final PlayerSearch playerSearch;
+    public final String NAME;
+    public final String POSITION;
+    public final String TEAM;
 
     public Player(String name) throws IOException, InterruptedException {
         NAME = name;
-        playerSearch = new PlayerSearch(name, 2023);
+        playerSearch = new PlayerSearch(NAME, 2023);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
         String[] teamArray = playerSearch.TEAM.split(" ");
         TEAM = teamArray[teamArray.length-1];
@@ -32,11 +32,11 @@ public class Player {
                 seasonStats = new WRSeasonStats();
                 filereader = new FileReader(Utils.RECEIVING);
             } else if ( POSITION.equals("QB") ) {
-                seasonStats = new RBSeasonStats();
+                seasonStats = new QBSeasonStats();
                 filereader = new FileReader(Utils.PASSING);
             }
             else {
-                seasonStats = new QBSeasonStats();
+                seasonStats = new RBSeasonStats();
                 filereader = new FileReader(Utils.RUSHING);
             }
             // create csvReader object passing
@@ -45,8 +45,7 @@ public class Player {
             String[] nextRecord;
             // we are going to read data line by line
             while ( (nextRecord = csvReader.readNext()) != null ) {
-                if ( ! nextRecord[1].contains(NAME) ) continue;
-                else{
+                if ( nextRecord[1].contains(NAME) ) {
                     seasonStats.setRank(nextRecord[0]);
                     seasonStats.setPlayer(nextRecord[1]);
                     seasonStats.setTeam(nextRecord[2]);
@@ -69,6 +68,45 @@ public class Player {
                         seasonStats.setYpg(Double.valueOf(nextRecord[18]));
                         seasonStats.setFumbles(Integer.valueOf(nextRecord[19]));
                         seasonStats.setId(nextRecord[20]);
+                    } else if ( POSITION.equals("QB")) {
+                        seasonStats.setRecord(nextRecord[7]);
+                        seasonStats.setCompletions(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setAttempts(Integer.valueOf(nextRecord[9]));
+                        seasonStats.setCompletionPct(nextRecord[10]);
+                        seasonStats.setYards(Integer.valueOf(nextRecord[11]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setTouchdownPct(nextRecord[13]);
+                        seasonStats.setInterceptions(Integer.valueOf(nextRecord[14]));
+                        seasonStats.setInterceptionPct(nextRecord[15]);
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[16]));
+                        seasonStats.setSuccessPct(nextRecord[17]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[18]));
+                        seasonStats.setYpa(Double.valueOf(nextRecord[19]));
+                        seasonStats.setAypa(Double.valueOf(nextRecord[20]));
+                        seasonStats.setYpc(Double.valueOf(nextRecord[21]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[22]));
+                        seasonStats.setRate(Double.valueOf(nextRecord[23]));
+                        seasonStats.setQbr(Double.valueOf(nextRecord[24]));
+                        seasonStats.setSacks(Integer.valueOf(nextRecord[25]));
+                        seasonStats.setSackYards(Integer.valueOf(nextRecord[26]));
+                        seasonStats.setSackPct(nextRecord[27]);
+                        seasonStats.setNypa(Double.valueOf(nextRecord[28]));
+                        seasonStats.setAnypa(Double.valueOf(nextRecord[29]));
+                        seasonStats.setComebacks(Integer.valueOf(nextRecord[30]));
+                        seasonStats.setGwd(Integer.valueOf(nextRecord[31]));
+                        seasonStats.setId(nextRecord[32]);
+                    }
+                    else {
+                        seasonStats.setAttempts(Integer.valueOf(nextRecord[7]));
+                        seasonStats.setYards(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[9]));
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[10]));
+                        seasonStats.setSuccessPct(nextRecord[11]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setYpa(Double.valueOf(nextRecord[13]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[14]));
+                        seasonStats.setFumbles(Integer.valueOf(nextRecord[15]));
+                        seasonStats.setId(nextRecord[16]);
                     }
                 }
             }

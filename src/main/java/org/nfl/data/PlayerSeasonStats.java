@@ -175,4 +175,136 @@ public class PlayerSeasonStats {
 
     }
 
+    public void setRecord(String record){}
+
+    public String getRecord(){ return "";}
+
+    public void setCompletions(int completions) {
+    }
+
+    public void setAttempts(int attempts) {
+    }
+
+    public void setCompletionPct(String completionPct) {
+    }
+
+    public void setTouchdownPct(String touchdownPct) {
+    }
+
+    public void setInterceptions(int interceptions) {
+    }
+
+    public void setInterceptionPct(String interceptionPct) {
+    }
+
+    public void setYpa(double ypa) {
+    }
+
+    public void setAypa(double aypa) {
+    }
+
+    public void setYpc(double ypc) {
+    }
+
+    public void setRate(double rate) {
+    }
+
+    public void setQbr(double qbr) {
+    }
+
+    public void setSacks(int sacks) {
+    }
+
+    public void setSackYards(int sackYards) {
+    }
+
+    public void setSackPct(String sackPct) {
+    }
+
+    public void setNypa(double nypa) {
+    }
+
+    public void setAnypa(double anypa) {
+    }
+
+    public void setComebacks(int comebacks) {
+    }
+
+    public void setGwd(int gwd) {
+    }
+
+    // Getters
+    public int getCompletions() {
+        return 0;
+    }
+
+    public int getAttempts() {
+        return 0;
+    }
+
+    public String getCompletionPct() {
+        return "";
+    }
+
+    public String getTouchdownPct() {
+        return "";
+    }
+
+    public int getInterceptions() {
+        return 0;
+    }
+
+    public String getInterceptionPct() {
+        return "";
+    }
+
+    public double getYpa() {
+        return 0.0;
+    }
+
+    public double getAypa() {
+        return 0.0;
+    }
+
+    public double getYpc() {
+        return 0.0;
+    }
+
+    public double getRate() {
+        return 0.0;
+    }
+
+    public double getQbr() {
+        return 0.0;
+    }
+
+    public int getSacks() {
+        return 0;
+    }
+
+    public int getSackYards() {
+        return 0;
+    }
+
+    public String getSackPct() {
+        return "";
+    }
+
+    public double getNypa() {
+        return 0.0;
+    }
+
+    public double getAnypa() {
+        return 0.0;
+    }
+
+    public int getComebacks() {
+        return 0;
+    }
+
+    public int getGwd() {
+        return 0;
+    }
+
+
 }
