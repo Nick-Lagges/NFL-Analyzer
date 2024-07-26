@@ -31,7 +31,7 @@ public class PlayerSearch {
         URL = pathGetter();
         DOCUMENT = Jsoup.connect(URL).get();
         POSITION_INFO = getPosition();
-        TEAM = getTeam();
+        TEAM = Utils.ABBR_TO_TEAM.get(getStatString("team").getFirst().toLowerCase());
         Thread.sleep(500 + rand.nextInt(1500));
     }
 
@@ -39,12 +39,6 @@ public class PlayerSearch {
         String positionInfo;
         positionInfo = DOCUMENT.getElementById("meta").select("p").get(1).text();
         return positionInfo;
-    }
-
-    private String getTeam() {
-        String team;
-        team = DOCUMENT.getElementById("meta").select("p").get(3).text();
-        return team;
     }
 
 
