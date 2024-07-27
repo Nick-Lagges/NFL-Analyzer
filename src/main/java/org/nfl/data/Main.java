@@ -12,11 +12,14 @@ public class Main {
             DefenseSearch team = new DefenseSearch("bears", 2017);
             System.out.println(team.getStatAgainst("passing touchdowns", "qb"));*/
 
-            Utils util = new Utils();
-            Player moore = new Player("Brandon Aiyuk");
+
+            new GUI();
+            /*Player moore = new Player("Brandon Aiyuk");
             for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
                 System.out.println( game.getWEEK() + " : " + game.getWindSpeed() );
             }
+
+             */
 
             //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
             //System.out.println(moore.getStatString("location"));
