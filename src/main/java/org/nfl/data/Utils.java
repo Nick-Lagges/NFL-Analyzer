@@ -6,10 +6,14 @@ import java.util.Map;
 public class Utils {
     public final static Map<String,String> STAT_TO_ID = new HashMap<>();
     public final static Map<String,String> TEAM_TO_LOCATOR = new HashMap<>();
-    public final static String RECEIVING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Receiving2023.csv";
-    public final static String PASSING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Passing2023.csv";
-    public final static String RUSHING = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Rushing2023.csv";
-    public final static String DEFENSE = "C:\\Users\\tlagg\\IdeaProjects\\nflStats\\database\\statistics\\Defense2023.csv";
+    public static Map<String,String> ABBR_TO_TEAM = new HashMap<>();
+    public final static String RECEIVING23 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2023.csv";
+    public final static String PASSING23 = System.getProperty("user.dir") + "\\database\\statistics\\Passing2023.csv";
+    public final static String RUSHING23 = System.getProperty("user.dir") + "\\database\\statistics\\Rushing2023.csv";
+    public final static String DEFENSE23 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2023.csv";
+    public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather.csv";
+
+    public final static String DOMED_TEAMS = "cardinals, falcons, cowboys, lions, texans, colts, raiders, chargers, rams, vikings, saints";
 
     public Utils() {
         STAT_TO_ID.put("targets", "targets");
@@ -29,11 +33,14 @@ public class Utils {
         STAT_TO_ID.put("week", "week_num");
         STAT_TO_ID.put("age", "age");
         STAT_TO_ID.put("location", "game_location");
+        STAT_TO_ID.put("date", "game_date");
+        STAT_TO_ID.put("team", "team");
+        STAT_TO_ID.put("reason", "reason");
 
         TEAM_TO_LOCATOR.put("commanders", "was");
         TEAM_TO_LOCATOR.put("eagles", "phi");
         TEAM_TO_LOCATOR.put("lions", "det");
-        TEAM_TO_LOCATOR.put("san diego", "sdg");
+        TEAM_TO_LOCATOR.put("chargers", "sdg");
         TEAM_TO_LOCATOR.put("giants", "nyg");
         TEAM_TO_LOCATOR.put("vikings", "min");
         TEAM_TO_LOCATOR.put("bengals", "cin");
@@ -62,5 +69,40 @@ public class Utils {
         TEAM_TO_LOCATOR.put("chiefs", "kan");
         TEAM_TO_LOCATOR.put("jets", "nyj");
         TEAM_TO_LOCATOR.put("bears", "chi");
+
+        ABBR_TO_TEAM.put("ari", "cardinals");
+        ABBR_TO_TEAM.put("atl", "falcons");
+        ABBR_TO_TEAM.put("bal", "ravens");
+        ABBR_TO_TEAM.put("buf", "bills");
+        ABBR_TO_TEAM.put("car", "panthers");
+        ABBR_TO_TEAM.put("chi", "bears");
+        ABBR_TO_TEAM.put("cin", "bengals");
+        ABBR_TO_TEAM.put("cle", "browns");
+        ABBR_TO_TEAM.put("dal", "cowboys");
+        ABBR_TO_TEAM.put("den", "broncos");
+        ABBR_TO_TEAM.put("det", "lions");
+        ABBR_TO_TEAM.put("gnb", "packers");
+        ABBR_TO_TEAM.put("htx", "texans");
+        ABBR_TO_TEAM.put("hou", "texans");
+        ABBR_TO_TEAM.put("ind", "colts");
+        ABBR_TO_TEAM.put("jax", "jaguars");
+        ABBR_TO_TEAM.put("kan", "chiefs");
+        ABBR_TO_TEAM.put("lvr", "raiders");
+        ABBR_TO_TEAM.put("lac", "chargers");
+        ABBR_TO_TEAM.put("lar", "rams");
+        ABBR_TO_TEAM.put("mia", "dolphins");
+        ABBR_TO_TEAM.put("min", "vikings");
+        ABBR_TO_TEAM.put("nwe", "patriots");
+        ABBR_TO_TEAM.put("nor", "saints");
+        ABBR_TO_TEAM.put("nyg", "giants");
+        ABBR_TO_TEAM.put("nyj", "jets");
+        ABBR_TO_TEAM.put("phi", "eagles");
+        ABBR_TO_TEAM.put("pit", "steelers");
+        ABBR_TO_TEAM.put("sfo", "49ers");
+        ABBR_TO_TEAM.put("sea", "seahawks");
+        ABBR_TO_TEAM.put("tam", "buccaneers");
+        ABBR_TO_TEAM.put("ten", "titans");
+        ABBR_TO_TEAM.put("was", "commanders");
+
     }
 }

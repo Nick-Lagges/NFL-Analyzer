@@ -7,22 +7,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Player {
-    private ArrayList<String> SEASON_STATS = new ArrayList<>();
-    private ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
-    private ArrayList<PlayerGame> GAME_LOG = new ArrayList<>();
-    private String NAME;
-    private String POSITION;
-    private String TEAM;
-    private PlayerSearch playerSearch;
+    private PlayerSeasonStats seasonStats;
+    private final ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
+    private final PlayerGameLog GAME_LOG = new PlayerGameLog();
+    private final PlayerSearch playerSearch;
+    public final String NAME;
+    public final String POSITION;
+    public final String TEAM;
 
     public Player(String name) throws IOException, InterruptedException {
         NAME = name;
-        playerSearch = new PlayerSearch(name, 2023);
+        playerSearch = new PlayerSearch(NAME, 2023);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
-        generateSeasonStats();
-        String[] teamArray = playerSearch.TEAM.split(" ");
-        TEAM = teamArray[teamArray.length-1];
-        generateGameLog();
+        TEAM = playerSearch.TEAM;
     }
 
     public void generateSeasonStats(){
@@ -30,13 +27,16 @@ public class Player {
             // Create an object of filereader
             // class with CSV file as a parameter.
             FileReader filereader;
-            if ( POSITION.equals("WR") ) {
-                filereader = new FileReader(Utils.RECEIVING);
+            if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
+                seasonStats = new WRSeasonStats();
+                filereader = new FileReader(Utils.RECEIVING23);
             } else if ( POSITION.equals("QB") ) {
-                filereader = new FileReader(Utils.PASSING);
+                seasonStats = new QBSeasonStats();
+                filereader = new FileReader(Utils.PASSING23);
             }
             else {
-                filereader = new FileReader(Utils.RUSHING);
+                seasonStats = new RBSeasonStats();
+                filereader = new FileReader(Utils.RUSHING23);
             }
             // create csvReader object passing
             // file reader as a parameter
@@ -44,11 +44,70 @@ public class Player {
             String[] nextRecord;
             // we are going to read data line by line
             while ( (nextRecord = csvReader.readNext()) != null ) {
-                if ( ! nextRecord[1].contains(NAME) ) continue;
-                else{
-                    for (String cell : nextRecord) {
-                        SEASON_STATS.add(cell);
+                if ( nextRecord[1].contains(NAME) ) {
+                    seasonStats.setRank(nextRecord[0]);
+                    seasonStats.setPlayer(nextRecord[1]);
+                    seasonStats.setTeam(nextRecord[2]);
+                    seasonStats.setAge(Integer.valueOf(nextRecord[3]));
+                    seasonStats.setPosition(nextRecord[4]);
+                    seasonStats.setGames(Integer.valueOf(nextRecord[5]));
+                    seasonStats.setGamesStarted(Integer.valueOf(nextRecord[6]));
+                    if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
+                        seasonStats.setTargets(Integer.valueOf(nextRecord[7]));
+                        seasonStats.setReceptions(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setCatchPct(nextRecord[9]);
+                        seasonStats.setYards(Integer.valueOf(nextRecord[10]));
+                        seasonStats.setYpr(Double.valueOf(nextRecord[11]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[13]));
+                        seasonStats.setSuccessPct(nextRecord[14]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[15]));
+                        seasonStats.setYpt(Double.valueOf(nextRecord[16]));
+                        seasonStats.setRpg(Double.valueOf(nextRecord[17]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[18]));
+                        seasonStats.setFumbles(Integer.valueOf(nextRecord[19]));
+                        seasonStats.setId(nextRecord[20]);
+                    } else if ( POSITION.equals("QB")) {
+                        seasonStats.setRecord(nextRecord[7]);
+                        seasonStats.setCompletions(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setAttempts(Integer.valueOf(nextRecord[9]));
+                        seasonStats.setCompletionPct(nextRecord[10]);
+                        seasonStats.setYards(Integer.valueOf(nextRecord[11]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setTouchdownPct(nextRecord[13]);
+                        seasonStats.setInterceptions(Integer.valueOf(nextRecord[14]));
+                        seasonStats.setInterceptionPct(nextRecord[15]);
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[16]));
+                        seasonStats.setSuccessPct(nextRecord[17]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[18]));
+                        seasonStats.setYpa(Double.valueOf(nextRecord[19]));
+                        seasonStats.setAypa(Double.valueOf(nextRecord[20]));
+                        seasonStats.setYpc(Double.valueOf(nextRecord[21]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[22]));
+                        seasonStats.setRate(Double.valueOf(nextRecord[23]));
+                        seasonStats.setQbr(Double.valueOf(nextRecord[24]));
+                        seasonStats.setSacks(Integer.valueOf(nextRecord[25]));
+                        seasonStats.setSackYards(Integer.valueOf(nextRecord[26]));
+                        seasonStats.setSackPct(nextRecord[27]);
+                        seasonStats.setNypa(Double.valueOf(nextRecord[28]));
+                        seasonStats.setAnypa(Double.valueOf(nextRecord[29]));
+                        seasonStats.setComebacks(Integer.valueOf(nextRecord[30]));
+                        seasonStats.setGwd(Integer.valueOf(nextRecord[31]));
+                        seasonStats.setId(nextRecord[32]);
                     }
+                    else {
+                        seasonStats.setAttempts(Integer.valueOf(nextRecord[7]));
+                        seasonStats.setYards(Integer.valueOf(nextRecord[8]));
+                        seasonStats.setTouchdowns(Integer.valueOf(nextRecord[9]));
+                        seasonStats.setFirstDowns(Integer.valueOf(nextRecord[10]));
+                        seasonStats.setSuccessPct(nextRecord[11]);
+                        seasonStats.setLongest(Integer.valueOf(nextRecord[12]));
+                        seasonStats.setYpa(Double.valueOf(nextRecord[13]));
+                        seasonStats.setYpg(Double.valueOf(nextRecord[14]));
+                        seasonStats.setFumbles(Integer.valueOf(nextRecord[15]));
+                        seasonStats.setId(nextRecord[16]);
+                    }
+                    break;
                 }
             }
         }
@@ -57,9 +116,11 @@ public class Player {
         }
     }
 
-    public void generateGameLog() {
+    public void generateGameLog() throws IOException {
+        ArrayList<String> DATE = playerSearch.getStatString("date");
         ArrayList<String> OPPONENT = playerSearch.getStatString("opponent");
         ArrayList<String> AGE = playerSearch.getStatString("age");
+        AGE.removeLast();
         ArrayList<String> LOCATION = playerSearch.getStatString("location");
         ArrayList<Integer> WEEK = playerSearch.getStat("week");
         ArrayList<Integer> TAR = null;
@@ -74,7 +135,7 @@ public class Player {
         ArrayList<Integer> PASS_COMP = null;
         ArrayList<Integer> PASS_YD = null;
         ArrayList<Integer> PASS_INT = null;
-        if ( POSITION.equals("WR") ) {
+        if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
             TAR = playerSearch.getStat("targets");
             REC = playerSearch.getStat("receptions");
             REC_YD = playerSearch.getStat("receiving yards");
@@ -98,8 +159,9 @@ public class Player {
         }
         int gamesMissed = 0;
         int i = 0;
-        for ( int j = 0; j < AGE.size(); j++ ){
+        for ( int j = 0; j < WEEK.size(); j++ ){
             PlayerGame playerGame = new PlayerGame();
+            playerGame.setDate(DATE.get(j));
             playerGame.setOPPONENT(OPPONENT.get(j));
             playerGame.setWEEK(WEEK.get(j));
             playerGame.setHomeOrAway(LOCATION.get(j));
@@ -122,7 +184,7 @@ public class Player {
                 gamesMissed++;
             }
             else {
-                if ( POSITION.equals("WR") ) {
+                if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                     playerGame.setTAR(TAR.get(i));
                     playerGame.setREC(REC.get(i));
                     playerGame.setREC_YD(REC_YD.get(i));
@@ -142,15 +204,20 @@ public class Player {
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 i++;
             }
-            GAME_LOG.add(playerGame);
+            if ( playerGame.getHomeORAway().equals("home") ) playerGame.setHomeTeam(TEAM);
+            else playerGame.setHomeTeam(Utils.ABBR_TO_TEAM.get(playerGame.getOPPONENT()));
+            playerGame.generateWeather();
+            GAME_LOG.addGame(playerGame);
         }
     }
 
-    public ArrayList<PlayerGame> getGAME_LOG() {
+    public PlayerGameLog getGAME_LOG() throws IOException {
+        if ( GAME_LOG.GAME_LOG.isEmpty() ) generateGameLog();
         return GAME_LOG;
     }
 
-    public ArrayList<String> getSEASON_STATS() {
-        return SEASON_STATS;
+    public PlayerSeasonStats getSEASON_STATS() {
+        if ( seasonStats == null ) generateSeasonStats();
+        return seasonStats;
     }
 }
