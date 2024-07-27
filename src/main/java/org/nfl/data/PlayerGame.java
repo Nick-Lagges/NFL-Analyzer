@@ -353,7 +353,7 @@ public class PlayerGame {
                     else this.setWindChill(Double.valueOf(nextRecord[9]));
                     this.setPrecipitation(Double.valueOf(nextRecord[10]));
                     if ( nextRecord[11].isEmpty() ) this.setSnowDepth(0.0);
-                    else this.setSnowDepth(Double.valueOf(nextRecord[7]));
+                    else this.setSnowDepth(Double.valueOf(nextRecord[11]));
                     this.setVisibility(Double.valueOf(nextRecord[12]));
                     this.setCloudCover(Double.valueOf(nextRecord[13]));
                     if ( nextRecord[14].isEmpty() ) this.setWeatherType("none");
