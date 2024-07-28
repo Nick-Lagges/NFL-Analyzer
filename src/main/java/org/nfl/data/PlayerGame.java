@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class PlayerGame {
 
-    public int WEEK;
+    public Integer WEEK;
     public String OPPONENT;
     public int TAR;
     public int REC;
@@ -23,7 +23,7 @@ public class PlayerGame {
     public int PASS_YD;
     public int PASS_INT;
     public String FIELD;
-    public String OFF_SNAP;
+    public double OFF_SNAP;
 
     private String homeTeam;
     private String date;
@@ -195,7 +195,7 @@ public class PlayerGame {
         this.FIELD = FIELD;
     }
 
-    public int getWEEK() {
+    public Integer getWEEK() {
         return WEEK;
     }
 
@@ -307,12 +307,12 @@ public class PlayerGame {
         this.PASS_INT = PASS_INT;
     }
 
-    public String getOFF_SNAP() {
+    public double getOFF_SNAP() {
         return OFF_SNAP;
     }
 
     public void setOFF_SNAP(String OFF_SNAP) {
-        this.OFF_SNAP = OFF_SNAP;
+        this.OFF_SNAP = Double.valueOf(OFF_SNAP.substring(0,OFF_SNAP.length()-1));
     }
 
     public void generateWeather() throws IOException {
