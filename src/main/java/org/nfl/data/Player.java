@@ -13,12 +13,15 @@ public class Player {
     public final String NAME;
     public final String POSITION;
     public final String TEAM;
+    private LineSearch lineSearch;
 
     public Player(String name) throws IOException, InterruptedException {
         NAME = name;
         playerSearch = new PlayerSearch(NAME, 2023);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
         TEAM = playerSearch.TEAM;
+        lineSearch = new LineSearch(NAME);
+        lineSearch.findLines();
     }
 
     public void generateSeasonStats(){
@@ -139,9 +142,15 @@ public class Player {
             REC = playerSearch.getStat("receptions");
             REC_YD = playerSearch.getStat("receiving yards");
             REC_TD = playerSearch.getStat("receiving touchdowns");
-            RUSH_ATT = playerSearch.getStat("rushing attempts");
-            RUSH_YD = playerSearch.getStat("rushing yards");
-            RUSH_TD = playerSearch.getStat("rushing touchdowns");
+            try {
+                RUSH_ATT = playerSearch.getStat("rushing attempts");
+                RUSH_YD = playerSearch.getStat("rushing yards");
+                RUSH_TD = playerSearch.getStat("rushing touchdowns");
+            } catch (NullPointerException e) {
+                RUSH_ATT = null;
+                RUSH_YD = null;
+                RUSH_TD = null;
+            }
         } else if ( POSITION.equals("RB") ) {
             RUSH_ATT = playerSearch.getStat("rushing attempts");
             RUSH_YD = playerSearch.getStat("rushing yards");
@@ -169,7 +178,7 @@ public class Player {
         int gamesMissed = 0;
         int i = 0;
         for ( int j = 0; j < WEEK.size(); j++ ){
-            PlayerGame playerGame = new PlayerGame();
+            PlayerGame playerGame = new PlayerGame(NAME);
             playerGame.setDate(DATE.get(j));
             playerGame.setOPPONENT(OPPONENT.get(j));
             playerGame.setWEEK(WEEK.get(j));
@@ -198,9 +207,16 @@ public class Player {
                     playerGame.setREC(REC.get(i));
                     playerGame.setREC_YD(REC_YD.get(i));
                     playerGame.setREC_TD(REC_TD.get(i));
-                    playerGame.setRUSH_ATT(RUSH_ATT.get(i));
-                    playerGame.setRUSH_YD(RUSH_YD.get(i));
-                    playerGame.setRUSH_TD(RUSH_TD.get(i));
+                    try {
+                        playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                        playerGame.setRUSH_YD(RUSH_YD.get(i));
+                        playerGame.setRUSH_TD(RUSH_TD.get(i));
+                    }
+                    catch (NullPointerException e){
+                        playerGame.setRUSH_ATT(0);
+                        playerGame.setRUSH_YD(0);
+                        playerGame.setRUSH_TD(0);
+                    }
                 } else if ( POSITION.equals("RB") ) {
                     playerGame.setTAR(TAR.get(i));
                     playerGame.setREC(REC.get(i));
@@ -221,6 +237,7 @@ public class Player {
                     playerGame.setRUSH_TD(RUSH_TD.get(i));
                 }
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
+                playerGame.setAllLines(lineSearch);
                 i++;
             }
             if ( playerGame.getHomeORAway().equals("home") ) playerGame.setHomeTeam(TEAM);

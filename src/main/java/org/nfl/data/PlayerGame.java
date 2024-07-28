@@ -25,6 +25,15 @@ public class PlayerGame {
     public String FIELD;
     public double OFF_SNAP;
 
+    private double recLine;
+    private double recYdLine;
+    private double rushAttLine;
+    private double rushYdLine;
+    private double passAttLine;
+    private double passCompLine;
+    private double passIntLine;
+    private double passTDLine;
+
     private String homeTeam;
     private String date;
 
@@ -44,6 +53,84 @@ public class PlayerGame {
     private String conditions;
 
     private double feelsLike;
+
+    public PlayerGame(String playerName) {
+    }
+
+    public void setAllLines(LineSearch lineSearch){
+        this.setRecLine(lineSearch.getReceptionsLines().get(WEEK));
+        this.setRecYdLine(lineSearch.getReceivingYardsLines().get(WEEK));
+        this.setRushAttLine(lineSearch.getRushingAttemptsLines().get(WEEK));
+        this.setRushYdLine(lineSearch.getRushingYardsLines().get(WEEK));
+        this.setPassCompLine(lineSearch.getCompletionsLines().get(WEEK));
+        this.setPassAttLine(lineSearch.getPassAttemptsLines().get(WEEK));
+        this.setPassTDLine(lineSearch.getPassTDLines().get(WEEK));
+        this.setPassIntLine(lineSearch.getPassIntsLines().get(WEEK));
+    }
+
+    public double getRecLine() {
+        return recLine;
+    }
+
+    public void setRecLine(double recLine) {
+        this.recLine = recLine;
+    }
+
+    public double getRecYdLine() {
+        return recYdLine;
+    }
+
+    public void setRecYdLine(double recYdLine) {
+        this.recYdLine = recYdLine;
+    }
+
+    public double getRushAttLine() {
+        return rushAttLine;
+    }
+
+    public void setRushAttLine(double rushAttLine) {
+        this.rushAttLine = rushAttLine;
+    }
+
+    public double getRushYdLine() {
+        return rushYdLine;
+    }
+
+    public void setRushYdLine(double rushYdLine) {
+        this.rushYdLine = rushYdLine;
+    }
+
+    public double getPassAttLine() {
+        return passAttLine;
+    }
+
+    public void setPassAttLine(double passAttLine) {
+        this.passAttLine = passAttLine;
+    }
+
+    public double getPassCompLine() {
+        return passCompLine;
+    }
+
+    public void setPassCompLine(double passCompLine) {
+        this.passCompLine = passCompLine;
+    }
+
+    public double getPassIntLine() {
+        return passIntLine;
+    }
+
+    public void setPassIntLine(double passIntLine) {
+        this.passIntLine = passIntLine;
+    }
+
+    public double getPassTDLine() {
+        return passTDLine;
+    }
+
+    public void setPassTDLine(double passTDLine) {
+        this.passTDLine = passTDLine;
+    }
 
     public double getFeelsLike() {
         return feelsLike;
@@ -174,9 +261,6 @@ public class PlayerGame {
 
     public void setConditions(String conditions) {
         this.conditions = conditions;
-    }
-
-    public PlayerGame() {
     }
 
     public String getHomeTeam() {
