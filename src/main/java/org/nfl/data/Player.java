@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 public class Player {
     private PlayerSeasonStats seasonStats;
-    private final ArrayList<String[]> SEASON_WEATHER = new ArrayList<>();
     private final PlayerGameLog GAME_LOG = new PlayerGameLog();
     private final PlayerSearch playerSearch;
     public final String NAME;
@@ -140,16 +139,26 @@ public class Player {
             REC = playerSearch.getStat("receptions");
             REC_YD = playerSearch.getStat("receiving yards");
             REC_TD = playerSearch.getStat("receiving touchdowns");
+            RUSH_ATT = playerSearch.getStat("rushing attempts");
+            RUSH_YD = playerSearch.getStat("rushing yards");
+            RUSH_TD = playerSearch.getStat("rushing touchdowns");
         } else if ( POSITION.equals("RB") ) {
             RUSH_ATT = playerSearch.getStat("rushing attempts");
             RUSH_YD = playerSearch.getStat("rushing yards");
             RUSH_TD = playerSearch.getStat("rushing touchdowns");
+            TAR = playerSearch.getStat("targets");
+            REC = playerSearch.getStat("receptions");
+            REC_YD = playerSearch.getStat("receiving yards");
+            REC_TD = playerSearch.getStat("receiving touchdowns");
         } else if ( POSITION.equals("QB") ) {
             PASS_TD = playerSearch.getStat("passing touchdowns");
             PASS_ATT = playerSearch.getStat("passing attempts");
             PASS_COMP = playerSearch.getStat("passing completions");
             PASS_YD = playerSearch.getStat("passing yards");
             PASS_INT = playerSearch.getStat("passing interceptions");
+            RUSH_ATT = playerSearch.getStat("rushing attempts");
+            RUSH_YD = playerSearch.getStat("rushing yards");
+            RUSH_TD = playerSearch.getStat("rushing touchdowns");
         }
         ArrayList<String> OFF_SNAP = playerSearch.getStatString("offensive snaps");
 
@@ -189,7 +198,14 @@ public class Player {
                     playerGame.setREC(REC.get(i));
                     playerGame.setREC_YD(REC_YD.get(i));
                     playerGame.setREC_TD(REC_TD.get(i));
+                    playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                    playerGame.setRUSH_YD(RUSH_YD.get(i));
+                    playerGame.setRUSH_TD(RUSH_TD.get(i));
                 } else if ( POSITION.equals("RB") ) {
+                    playerGame.setTAR(TAR.get(i));
+                    playerGame.setREC(REC.get(i));
+                    playerGame.setREC_YD(REC_YD.get(i));
+                    playerGame.setREC_TD(REC_TD.get(i));
                     playerGame.setRUSH_ATT(RUSH_ATT.get(i));
                     playerGame.setRUSH_YD(RUSH_YD.get(i));
                     playerGame.setRUSH_TD(RUSH_TD.get(i));
@@ -200,6 +216,9 @@ public class Player {
                     playerGame.setPASS_COMP(PASS_COMP.get(i));
                     playerGame.setPASS_YD(PASS_YD.get(i));
                     playerGame.setPASS_INT(PASS_INT.get(i));
+                    playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                    playerGame.setRUSH_YD(RUSH_YD.get(i));
+                    playerGame.setRUSH_TD(RUSH_TD.get(i));
                 }
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 i++;
