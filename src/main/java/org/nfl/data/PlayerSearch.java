@@ -99,8 +99,8 @@ public class PlayerSearch {
     private String pathGetter() throws IOException {
         String[] nameList = NAME.split(" ");
         StringBuilder path = new StringBuilder().append(URI);
-        if (nameList[0].length() > 2 ) { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2)); }
-        else { path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + "."); }
+        if ( NAME.equals("DJ Moore") ) path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + ".");
+        else  path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2));
         path.append(handlePathIssue(path.toString()));
         path.append("/gamelog/" + YEAR + "/");
         return path.toString();
