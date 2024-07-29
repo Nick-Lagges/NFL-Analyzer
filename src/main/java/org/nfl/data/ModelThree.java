@@ -1,22 +1,14 @@
 package org.nfl.data;
 
-import org.apache.commons.math3.stat.regression.SimpleRegression;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-/*
- * predicts player targets
- */
-public class ModelOne {
+public class ModelThree {
 
     private DefenseStats defenseStats;
 
-    public ModelOne(int year) {
+    public ModelThree(int year) {
         defenseStats = new DefenseStats(year);
     }
 
@@ -30,26 +22,19 @@ public class ModelOne {
         double c = 0.0;
         double d = 0.0;
         double e = 0.0;
-        double f = 0.0;
-        double g = 0.0;
-        double h = 0.0;
+
         if ( stat.equals("receptions") ) {
             try {
-                if ( game.getFeelsLike() > 34 ) {
-                    a = opp.getReceptionsPG() * -0.0466;
-                    b = game.getWindSpeed() * -0.1274;
-                    c = game.getFeelsLike() * 0.1060;
-                    d = opp.getExpectedPointsPG() * 0.2280;
-                    e = game.getVisibility() * 0.0062;
-                    f = game.getPrecipitation() * -0.0001;
-                    g = game.getOFF_SNAP() * 0.0413;
-                    h = opp.getFirstDownsPG() * -0.0509;
-                }
+                a = opp.getReceptionsPG() * -0.498;
+                b = game.getWindSpeed() * 0.125;
+                c = opp.getPointsPG() * 0.331;
+                d = opp.getExpectedPointsPG() * 0.054;
+                e = game.getOFF_SNAP() * 0.057;
             } catch (NullPointerException ex){
                 ex.printStackTrace();
             }
         }
-        double statValue = a + b + c + d + e + f + g + h;
+        double statValue = a + b + c + d + e;
         return round(statValue, 4);
     }
 
@@ -60,6 +45,4 @@ public class ModelOne {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-
-
 }
