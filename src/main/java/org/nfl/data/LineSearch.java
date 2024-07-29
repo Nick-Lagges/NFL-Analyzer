@@ -72,6 +72,14 @@ public class LineSearch {
         this.passIntsLines = passIntsLines;
     }
 
+    public ArrayList<Double> getPassYardsLines() {
+        return passYardsLines;
+    }
+
+    public void setPassYardsLines(ArrayList<Double> passYardsLines) {
+        this.passYardsLines = passYardsLines;
+    }
+
     private ArrayList<Double> receptionsLines = new ArrayList<>();
     private ArrayList<Double> receivingYardsLines = new ArrayList<>();
     private ArrayList<Double> rushingAttemptsLines = new ArrayList<>();
@@ -80,6 +88,7 @@ public class LineSearch {
     private ArrayList<Double> passAttemptsLines = new ArrayList<>();
     private ArrayList<Double> passTDLines = new ArrayList<>();
     private ArrayList<Double> passIntsLines = new ArrayList<>();
+    private ArrayList<Double> passYardsLines = new ArrayList<>();
 
     private String PLAYER_NAME;
     private int WEEK;
@@ -104,6 +113,7 @@ public class LineSearch {
             completionsLines.add(x, 0d);
             passTDLines.add(x, 0d);
             passIntsLines.add(x, 0d);
+            passYardsLines.add(x, 0d);
         }
     }
 
@@ -160,6 +170,10 @@ public class LineSearch {
                     else if ( e.text().contains("Pass Attempts") ) {
                         passAttemptsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
                         passAttemptsLines.remove(currWeek+1);
+                    }
+                    else if ( e.text().contains("Passing Yards") ) {
+                        passYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                        passYardsLines.remove(currWeek+1);
                     }
                     else if ( e.text().contains("Interceptions") ) {
                         passIntsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
