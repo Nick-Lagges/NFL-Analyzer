@@ -79,8 +79,8 @@ public class PlayerSeasonStats {
 
     }
 
-    public String getCatchPct() {
-        return "";
+    public double getCatchPct() {
+        return 0.0;
     }
 
     public void setCatchPct(String catchPct) {

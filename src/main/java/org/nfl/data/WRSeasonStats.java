@@ -3,7 +3,7 @@ package org.nfl.data;
 public class WRSeasonStats extends PlayerSeasonStats{
     public int targets;
     public int receptions;
-    public String catchPct;
+    public double catchPct;
     public int yards;
     public double ypr;
     public int touchdowns;
@@ -28,13 +28,13 @@ public class WRSeasonStats extends PlayerSeasonStats{
     }
 
     @Override
-    public String getCatchPct() {
+    public double getCatchPct() {
         return catchPct;
     }
 
     @Override
     public void setCatchPct(String catchPct) {
-        this.catchPct = catchPct;
+        this.catchPct = Double.valueOf(catchPct.substring(0, catchPct.indexOf("%")));
     }
 
     @Override
