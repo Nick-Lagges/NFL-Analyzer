@@ -2,12 +2,13 @@ package org.nfl.data;
 
 import com.opencsv.CSVReader;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
-public class DefenseStats {
+public class DefenseStats implements Comparable<TeamDefense>{
 
     private Integer YEAR;
 
@@ -18,8 +19,10 @@ public class DefenseStats {
     }
 
     public void generateStats() throws IOException {
-        FileReader fileReader = new FileReader(Utils.DEFENSE23);
-        CSVReader csvReader = new CSVReader(fileReader);
+        FileReader fileReaderAll;
+        if ( YEAR == 2023 ) fileReaderAll = new FileReader(Utils.DEFENSE23);
+        else fileReaderAll = new FileReader(Utils.DEFENSE22);
+        CSVReader csvReader = new CSVReader(fileReaderAll);
         String[] nextRecord;
         // we are going to read data line by line
         while ((nextRecord = csvReader.readNext()) != null) {
@@ -54,10 +57,60 @@ public class DefenseStats {
             teamDefense.setExpectedPointsPG(Double.valueOf(nextRecord[27]));
             NFL_DEFENSES.add(teamDefense);
         }
+        FileReader fileReaderWR  = new FileReader(Utils.VSWR22);
+        CSVReader csvReaderWR = new CSVReader(fileReaderWR);
+        String[] nextRecordWR;
+        // we are going to read data line by line
+        while ( (nextRecordWR = csvReaderWR.readNext()) != null ) {
+            if ( nextRecordWR[0].equals("Tm") ) continue;
+            for ( TeamDefense teamDefense : NFL_DEFENSES ){
+                if ( teamDefense.getTeamName().contains(nextRecordWR[0]) ){
+                    teamDefense.setTargetsPG(Double.valueOf(nextRecordWR[2]));
+                    teamDefense.setReceptionsPG(Double.valueOf(nextRecordWR[3]));
+                    teamDefense.setRecYardsPG(Double.valueOf(nextRecordWR[4]));
+                    teamDefense.setRecTDPG(Double.valueOf(nextRecordWR[5]));
+                }
+            }
+        }
     }
 
     public ArrayList<TeamDefense> getNFL_DEFENSES() throws IOException {
         if (NFL_DEFENSES.isEmpty()) this.generateStats();
         return NFL_DEFENSES;
+    }
+
+    public void sortTeams(String statComparer) throws IOException {
+        if ( NFL_DEFENSES.isEmpty() ) this.generateStats();
+        Collections.sort(NFL_DEFENSES, new Comparator<>() {
+            public int compare(TeamDefense o1, TeamDefense o2) {
+                if ( statComparer.equals("points per game") ){
+                    if (o1.getPointsPG() == o2.getPointsPG())
+                        return 0;
+                    return o1.getPointsPG() < o2.getPointsPG() ? -1 : 1;
+                } else if ( statComparer.equals("yards per game") ) {
+                    if (o1.getYardsPG() == o2.getYardsPG())
+                        return 0;
+                    return o1.getYardsPG() < o2.getYardsPG() ? -1 : 1;
+                } else if ( statComparer.equals("plays per game") ) {
+                    if (o1.getPlaysPG() == o2.getPlaysPG())
+                        return 0;
+                    return o1.getPlaysPG() < o2.getPlaysPG() ? -1 : 1;
+                } else if ( statComparer.equals("yards per play") ) {
+                    if (o1.getYardsPerPlay() == o2.getYardsPerPlay())
+                        return 0;
+                    return o1.getYardsPerPlay() < o2.getYardsPerPlay() ? -1 : 1;
+                } else if ( statComparer.equals("turnovers per game") ) {
+                    if (o1.getTurnoversPG() == o2.getTurnoversPG())
+                        return 0;
+                    return o1.getTurnoversPG() < o2.getTurnoversPG() ? -1 : 1;
+                }
+                return 0;
+            }
+        });
+    }
+
+    @Override
+    public int compareTo(TeamDefense o) {
+        return 0;
     }
 }

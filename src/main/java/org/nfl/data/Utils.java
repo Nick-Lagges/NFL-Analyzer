@@ -13,6 +13,7 @@ public class Utils {
     public final static String DEFENSE23 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2023.csv";
     public final static String DEFENSE22 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2022.csv";
     public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather.csv";
+    public final static String VSWR22 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs.csv";
 
     public final static String DOMED_TEAMS = "cardinals, falcons, cowboys, lions, texans, colts, raiders, chargers, rams, vikings, saints";
 
