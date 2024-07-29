@@ -5,38 +5,7 @@ import java.util.stream.StreamSupport;
 public class Main {
     public static void main(String[] args) {
         try {
-            //DataVisualization chart = new DataVisualization("Brandon Aiyuk", 2023, "receiving yards", 76.5, 10);
-            //chart.start();
-
-
-            /*System.out.println(modelOne.performModel());
-            Utils utils = new Utils();
-            DefenseSearch team = new DefenseSearch("bears", 2017);
-            System.out.println(team.getStatAgainst("passing touchdowns", "qb"));*/
-            //PlayerSearch moore = new PlayerSearch("DJ Moore", 2023);
-            //moore.getStat("receptions");
-            Utils utils = new Utils();
-            Player moore = new Player("AJ Dillon");
-            for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
-                System.out.println(game.getRUSH_YD() + " : " + game.getWEEK());
-            }
-
-            //new GUI();
-            /*Player moore = new Player("Brandon Aiyuk");
-            for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
-                System.out.println( game.getWEEK() + " : " + game.getWindSpeed() );
-            }
-
-             */
-
-            //PlayerSearch moore = new PlayerSearch("Davante Adams", 2023);
-            //System.out.println(moore.getStatString("location"));
-            //System.out.println(moore.getStatString("age"));
-            //Game bearsVsPackers = new Game("/boxscores/202309100chi.htm");
-            //Game bearsVsChiefs = new Game("/boxscores/202309240kan.htm");
-            //System.out.println(bearsVsPackers.getGameInfo());
-            //System.out.println(bearsVsChiefs.getGameStats());
-
+            new GUI();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
