@@ -18,7 +18,7 @@ public class GUI implements ActionListener {
     private Player selectedPlayer;
     private int playerYear;
     private String stat;
-    private double line;
+    private boolean lineDecision = false;
     private boolean nameTextEntered = false;
     private boolean yearTextEntered = false;
 
@@ -33,11 +33,17 @@ public class GUI implements ActionListener {
         JLabel nameLabel = new JLabel("Player Name");
         JLabel yearLabel = new JLabel("Year");
         JLabel statLabel = new JLabel("Stat");
-        JLabel lineLabel = new JLabel("Line");
+        JLabel lineLabel = new JLabel("See Lines?");
+        JLabel typeLabel = new JLabel("Chart Type");
 
         JTextField nameField = new JTextField("Player Name", 15);
         JTextField yearField = new JTextField("2023", 15);
-        JTextField lineField = new JTextField("0.5", 15);
+
+        String[] line = {"Yes", "No"};
+        final JComboBox<String> lineChoice = new JComboBox<>(line);
+
+        String[] chartType = {"Bar", "Line"};
+        final JComboBox<String> chartChoice = new JComboBox<>(chartType);
 
         ArrayList<String> keys = new ArrayList<>(Utils.STAT_TO_ID.keySet());
         keys.remove(keys.indexOf("age"));
@@ -60,7 +66,7 @@ public class GUI implements ActionListener {
                 playerName = nameField.getText();
                 playerYear = Integer.valueOf(yearField.getText());
                 stat = statDropdown.getSelectedItem().toString();
-                line = Double.valueOf(lineField.getText());
+                if ( lineChoice.getSelectedItem().toString().equals("Yes") ) lineDecision = true;
                 if ( playerNameList.contains(playerName) ) selectedPlayer = playerMap.get(playerName);
                 else {
                     try {
@@ -73,7 +79,7 @@ public class GUI implements ActionListener {
                 }
                 try {
                     if ( chartDropdown.getSelectedItem().equals("Game Log") ) {
-                        DataVisualization dataVisualization = new DataVisualization(selectedPlayer, playerYear, stat, line);
+                        DataVisualization dataVisualization = new DataVisualization(selectedPlayer, playerYear, stat, lineDecision, chartChoice.getSelectedItem().toString());
                         dataVisualization.start();
                     }
                 } catch (IOException ex) {
@@ -108,21 +114,9 @@ public class GUI implements ActionListener {
                 //nothing
             }
         });
-        lineField.addFocusListener(new FocusListener() {
-            public void focusGained(FocusEvent e) {
-                if ( ! nameTextEntered ) {
-                    lineField.setText("");
-                    nameTextEntered = true;
-                }
-            }
-
-            public void focusLost(FocusEvent e) {
-                //nothing
-            }
-        });
         JPanel panel = new JPanel();
         panel.setBorder(BorderFactory.createEmptyBorder(30,30,10,30));
-        panel.setLayout(new GridLayout(5,2));
+        panel.setLayout(new GridLayout(6,2));
         panel.add(nameLabel, BorderLayout.WEST);
         panel.add(nameField, BorderLayout.CENTER);
         panel.add(yearLabel, BorderLayout.WEST);
@@ -130,7 +124,9 @@ public class GUI implements ActionListener {
         panel.add(statLabel, BorderLayout.WEST);
         panel.add(statDropdown, BorderLayout.CENTER);
         panel.add(lineLabel, BorderLayout.CENTER);
-        panel.add(lineField, BorderLayout.WEST);
+        panel.add(lineChoice, BorderLayout.WEST);
+        panel.add(typeLabel, BorderLayout.WEST);
+        panel.add(chartChoice, BorderLayout.CENTER);
 
         panel.add(chartDropdown, BorderLayout.WEST);
         panel.add(execute);

@@ -33,6 +33,7 @@ public class PlayerGame {
     private double passCompLine;
     private double passIntLine;
     private double passTDLine;
+    private double passYdLine;
 
     private String homeTeam;
     private String date;
@@ -66,6 +67,15 @@ public class PlayerGame {
         this.setPassAttLine(lineSearch.getPassAttemptsLines().get(WEEK));
         this.setPassTDLine(lineSearch.getPassTDLines().get(WEEK));
         this.setPassIntLine(lineSearch.getPassIntsLines().get(WEEK));
+        this.setPassYdLine(lineSearch.getPassYardsLines().get(WEEK));
+    }
+
+    public double getPassYdLine() {
+        return passYdLine;
+    }
+
+    public void setPassYdLine(double passYdLine) {
+        this.passYdLine = passYdLine;
     }
 
     public double getRecLine() {
@@ -439,7 +449,8 @@ public class PlayerGame {
                     if ( nextRecord[11].isEmpty() ) this.setSnowDepth(0.0);
                     else this.setSnowDepth(Double.valueOf(nextRecord[11]));
                     this.setVisibility(Double.valueOf(nextRecord[12]));
-                    this.setCloudCover(Double.valueOf(nextRecord[13]));
+                    if ( nextRecord[13].isEmpty() ) this.setCloudCover(0.0);
+                    else this.setCloudCover(Double.valueOf(nextRecord[13]));
                     if ( nextRecord[14].isEmpty() ) this.setWeatherType("none");
                     else this.setWeatherType(nextRecord[14]);
                     this.setConditions(nextRecord[15]);

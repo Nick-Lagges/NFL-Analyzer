@@ -116,10 +116,15 @@ public class PlayerSearch {
                     testURL.deleteCharAt(51);
                     testURL.deleteCharAt(51);
                     testURL.insert(51, (i.toString() + j.toString()));
-                    Element responseStatus = Jsoup.connect(testURL.toString()).get().getElementById("stats");
-                    if ( responseStatus != null ) {
-                        id.append(i).append(j);
-                        return id.toString();
+                    try {
+                        Document testDoc = Jsoup.connect(testURL.toString()).get();
+                        Element responseStatus = testDoc.getElementById("stats");
+                        String positionInfo = testDoc.getElementById("meta").select("p").get(1).text().split(" ")[1];
+                        if (responseStatus != null && ( positionInfo.contains("WR") || positionInfo.contains("QB") || positionInfo.contains("RB") || positionInfo.contains("TE"))) {
+                            id.append(i).append(j);
+                            return id.toString();
+                        }
+                    } catch (NullPointerException e){
                     }
                 }
             }
