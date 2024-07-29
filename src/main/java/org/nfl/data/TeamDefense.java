@@ -30,7 +30,44 @@ public class TeamDefense {
     private double turnoverPct;
     private double expectedPointsPG;
 
+    private double targetsPG;
+    private double receptionsPG;
+    private double recYardsPG;
+    private double recTDPG;
+
     public TeamDefense() {}
+
+    public double getTargetsPG() {
+        return targetsPG;
+    }
+
+    public void setTargetsPG(double targetsPG) {
+        this.targetsPG = targetsPG;
+    }
+
+    public double getReceptionsPG() {
+        return receptionsPG;
+    }
+
+    public void setReceptionsPG(double receptionsPG) {
+        this.receptionsPG = receptionsPG;
+    }
+
+    public double getRecYardsPG() {
+        return recYardsPG;
+    }
+
+    public void setRecYardsPG(double recYardsPG) {
+        this.recYardsPG = recYardsPG;
+    }
+
+    public double getRecTDPG() {
+        return recTDPG;
+    }
+
+    public void setRecTDPG(double recTDPG) {
+        this.recTDPG = recTDPG;
+    }
 
     public String getTeamName() {
         return teamName;

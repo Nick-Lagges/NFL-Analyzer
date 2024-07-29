@@ -2,6 +2,7 @@ package org.nfl.data;
 
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,46 +11,28 @@ import java.util.List;
  */
 public class ModelOne {
 
-    private PlayerSearch PLAYER;
+    private DefenseStats defenseStats;
 
-    public ModelOne(PlayerSearch player) {
-        PLAYER = player;
+    public ModelOne(int year) {
+        defenseStats = new DefenseStats(year);
     }
 
-    public double performModel() {
-        PLAYER.getStat("receptions", 7);
-        ArrayList<Integer> mooreRec = new ArrayList<>(List.of(7, 6, 9, 10, 8));
-        return getMean(mooreRec);
-    }
-
-    private double getMean(ArrayList<Integer> list) {
-        double mean = 0;
-        for ( Integer val : list ) {
-            mean += val;
+    public double performModel(String stat, String opponent) throws IOException {
+        TeamDefense opp = null;
+        for ( TeamDefense team : defenseStats.getNFL_DEFENSES() ) {
+            if ( team.getTeamName().toLowerCase().contains(opponent) ) opp = team;
         }
-        mean = mean / list.size();
-        return regression(10.0);
-    }
-
-    public static double calculateSD(ArrayList<Integer> numList) {
-        double sum = 0.0, standardDeviation = 0.0;
-        int length = numList.size();
-        for (double num : numList) {
-            sum += num;
+        double statValue = 0.0;
+        if ( stat.equals("receptions") ) {
+            try {
+                statValue = opp.getReceptionsPG();
+                statValue *= 0.62;
+            } catch (NullPointerException e){
+                e.printStackTrace();
+            }
         }
-        double mean = sum / length;
-        for (double num : numList) {
-            standardDeviation += Math.pow(num - mean, 2);
-        }
-        return Math.sqrt(standardDeviation / length);
+        return statValue;
     }
 
-    private double regression(double predictor) {
-        SimpleRegression regression = new SimpleRegression(true);
 
-        double[][] season = new double[][] {{1, 1}, {2, 2}};
-        regression.addData(season);
-
-        return regression.predict(predictor);
-    }
 }
