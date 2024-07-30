@@ -7,8 +7,9 @@ public class Main {
         try {
             Utils utils = new Utils();
             DefenseStats defenseStats = new DefenseStats(2022);
-            ModelThree model = new ModelThree(2022);
-            Player moore = new Player("DJ Moore");
+            ModelFive model = new ModelFive(2022);
+            Player moore = new Player("Keenan Allen");
+
 
             double line;
             double pred;
@@ -48,11 +49,11 @@ public class Main {
                 //c = ( ( (pred > line) && (act > line) ) || ( (pred < line) && (act < line) ) );
                 //if ( c ) correct++;
                 if ( game.getFeelsLike() > 34 && game.getFeelsLike() < 80) {
-                    String formattedString = String.format("%d = (%f * v) + (%f * w) + (%f * x) + (%f * z) + (%f * t)", act, team.getReceptionsPG(), game.getWindSpeed(), team.getExpectedPointsPG(), game.getOFF_SNAP(), team.getPointsPG());
+                    String formattedString = String.format("%d = (%f * a) + (%f * b) + (%f * c) + (%f * d) + (%f * e) + (%f * f) + (%f * g)", act, team.getPointsPG(), team.getPlaysPG(), team.getExpectedPointsPG(), team.getReceptionsPG(), team.getPassAttPG(), team.getTargetsPG(), team.getScoresPerOffDrivePG());
                     System.out.println(formattedString);
                 }
             }
-        */
+            */
 
         } catch (Exception e) {
             throw new RuntimeException(e);
