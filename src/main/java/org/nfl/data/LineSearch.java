@@ -91,11 +91,12 @@ public class LineSearch {
     private ArrayList<Double> passYardsLines = new ArrayList<>();
 
     private String PLAYER_NAME;
-    private int WEEK;
+    private Integer YEAR;
     private String URI = "https://evanalytics.com";
     private String pastLineUrls;
 
-    public LineSearch(String playerName){
+    public LineSearch(String playerName, Integer year){
+        YEAR = year;
         String fName = playerName.split(" ")[0];
         String lName = playerName.split(" ")[1];
         if ( fName.equals("DJ") ) fName = "D.J.";
@@ -103,7 +104,8 @@ public class LineSearch {
         else if ( fName.equals("CJ") ) fName = "C.J.";
         else if ( fName.equals("KJ") ) fName = "K.J.";
         else if ( fName.equals("TJ") ) fName = "T.J.";
-        PLAYER_NAME = fName + " " + lName;
+        if ( playerName.equals("Amon-Ra St. Brown") ) PLAYER_NAME = playerName;
+        else PLAYER_NAME = fName + " " + lName;
         for ( int x = 0; x < 19; x++) {
             receptionsLines.add(x, 0d);
             receivingYardsLines.add(x, 0d);
@@ -122,6 +124,7 @@ public class LineSearch {
         lineUrl.append("/nfl/writenow/player-props/week-");
         boolean found = false;
         int week = 1;
+        String yearFind = "&season=" + YEAR;
         try {
             while (!found && week < 19) {
                 lineUrl.append(week);
@@ -140,7 +143,7 @@ public class LineSearch {
             }
             if ( found ){
                 String url = URI + pastLineUrls;
-                Document playerDoc = Jsoup.connect(url).get();
+                Document playerDoc = Jsoup.connect(url+yearFind).get();
                 Integer currWeek = 0;
                 String weekFinder = "";
                 for ( Element e : playerDoc.select("span[style=\"background-color: transparent;\"]")){

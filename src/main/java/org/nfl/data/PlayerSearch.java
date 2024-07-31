@@ -100,6 +100,7 @@ public class PlayerSearch {
         String[] nameList = NAME.split(" ");
         StringBuilder path = new StringBuilder().append(URI);
         if ( NAME.equals("DJ Moore") ) path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + ".");
+        else if (NAME.equals("Amon-Ra St. Brown") ) path.append("S/StxxAm");
         else  path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2));
         path.append(handlePathIssue(path.toString()));
         path.append("/gamelog/" + YEAR + "/");
