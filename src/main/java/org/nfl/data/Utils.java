@@ -8,12 +8,23 @@ public class Utils {
     public final static Map<String,String> TEAM_TO_LOCATOR = new HashMap<>();
     public static Map<String,String> ABBR_TO_TEAM = new HashMap<>();
     public final static String RECEIVING23 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2023.csv";
+    public final static String RECEIVING22 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2022.csv";
+    public final static String RECEIVING21 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2021.csv";
+
     public final static String PASSING23 = System.getProperty("user.dir") + "\\database\\statistics\\Passing2023.csv";
+    public final static String PASSING22 = System.getProperty("user.dir") + "\\database\\statistics\\Passing2022.csv";
+    public final static String PASSING21 = System.getProperty("user.dir") + "\\database\\statistics\\Passing2021.csv";
+
     public final static String RUSHING23 = System.getProperty("user.dir") + "\\database\\statistics\\Rushing2023.csv";
+    public final static String RUSHING22 = System.getProperty("user.dir") + "\\database\\statistics\\Rushing2022.csv";
+    public final static String RUSHING21 = System.getProperty("user.dir") + "\\database\\statistics\\Rushing2021.csv";
+
     public final static String DEFENSE23 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2023.csv";
     public final static String DEFENSE22 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2022.csv";
+    public final static String DEFENSE21 = System.getProperty("user.dir") + "\\database\\statistics\\Defense2021.csv";
     public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather.csv";
-    public final static String VSWR22 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs.csv";
+    public final static String VSWR22 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs2022.csv";
+    public final static String VSWR21 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs2021.csv";
 
     public final static String DOMED_TEAMS = "cardinals, falcons, cowboys, lions, texans, colts, raiders, chargers, rams, vikings, saints";
 

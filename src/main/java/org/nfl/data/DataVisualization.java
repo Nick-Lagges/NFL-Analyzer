@@ -19,10 +19,10 @@ public class DataVisualization extends ApplicationFrame {
     private final String STAT;
     private boolean LINE;
 
-    public DataVisualization( Player player, Integer year, String stat, boolean showLine, String type) throws IOException, InterruptedException {
+    public DataVisualization( Player player, String stat, boolean showLine, String type) throws IOException, InterruptedException {
         super(player.NAME);
         PLAYER = player;
-        YEAR = year;
+        YEAR = PLAYER.YEAR;
         STAT = stat;
         LINE = showLine;
         JFreeChart barChart;

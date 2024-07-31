@@ -4,15 +4,12 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-/*
- * predicts player targets
- */
-public class ModelOne {
+public class ModelSeven {
 
     private DefenseStats defenseStats;
 
-    public ModelOne(int previousYear) {
-        defenseStats = new DefenseStats(previousYear);
+    public ModelSeven(int year) {
+        defenseStats = new DefenseStats(year);
     }
 
     public double performModel(String stat, PlayerGame game) throws IOException {
@@ -20,29 +17,22 @@ public class ModelOne {
         for ( TeamDefense team : defenseStats.getNFL_DEFENSES() ) {
             if ( team.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())) ) opp = team;
         }
-        double a = 0.0;
-        double b = 0.0;
-        double c = 0.0;
-        double d = 0.0;
-        double e = 0.0;
-        double f = 0.0;
-        double g = 0.0;
-        double h = 0.0;
+        double a = -0.6986046498014316;
+        double b = 0.5596136177711213;
+        double c = 0.040383977382759784;
+        double d = 0.2974574590433117;
+
         if ( stat.equals("receptions") ) {
             try {
-                a = opp.getReceptionsPG() * -0.0466;
-                b = game.getWindSpeed() * -0.1274;
-                c = game.getFeelsLike() * 0.1060;
-                d = opp.getExpectedPointsPG() * 0.2280;
-                e = game.getVisibility() * 0.0062;
-                f = game.getPrecipitation() * -0.0001;
-                g = game.getOFF_SNAP() * 0.0413;
-                h = opp.getFirstDownsPG() * -0.0509;
+                a *= opp.getReceptionsPG();
+                b *=  opp.getTargetsPG();
+                c *= opp.getPassCompsPG();
+                d *= opp.getPassFirstDownsPG();
             } catch (NullPointerException ex){
                 ex.printStackTrace();
             }
         }
-        double statValue = a + b + c + d + e + f + g + h;
+        double statValue = a + b + c + d ;
         return round(statValue, 4);
     }
 
@@ -53,6 +43,4 @@ public class ModelOne {
         bd = bd.setScale(places, RoundingMode.HALF_UP);
         return bd.doubleValue();
     }
-
-
 }

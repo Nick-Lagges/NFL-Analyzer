@@ -70,7 +70,7 @@ public class GUI implements ActionListener {
                 if ( playerNameList.contains(playerName) ) selectedPlayer = playerMap.get(playerName);
                 else {
                     try {
-                        selectedPlayer = new Player(playerName);
+                        selectedPlayer = new Player(playerName, playerYear);
                     } catch (IOException ex) {
                         throw new RuntimeException(ex);
                     } catch (InterruptedException ex) {
@@ -79,7 +79,7 @@ public class GUI implements ActionListener {
                 }
                 try {
                     if ( chartDropdown.getSelectedItem().equals("Game Log") ) {
-                        DataVisualization dataVisualization = new DataVisualization(selectedPlayer, playerYear, stat, lineDecision, chartChoice.getSelectedItem().toString());
+                        DataVisualization dataVisualization = new DataVisualization(selectedPlayer, stat, lineDecision, chartChoice.getSelectedItem().toString());
                         dataVisualization.start();
                     }
                 } catch (IOException ex) {

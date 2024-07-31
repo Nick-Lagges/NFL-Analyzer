@@ -13,32 +13,43 @@ public class Player {
     public final String NAME;
     public final String POSITION;
     public final String TEAM;
+    public final Integer YEAR;
     private LineSearch lineSearch;
 
-    public Player(String name) throws IOException, InterruptedException {
+    public Player(String name, Integer year) throws IOException, InterruptedException {
         NAME = name;
-        playerSearch = new PlayerSearch(NAME, 2023);
+        YEAR = year;
+        playerSearch = new PlayerSearch(NAME, YEAR);
         POSITION = playerSearch.POSITION_INFO.split(" ")[1];
         TEAM = playerSearch.TEAM;
-        lineSearch = new LineSearch(NAME);
+        lineSearch = new LineSearch(NAME, YEAR);
         lineSearch.findLines();
     }
 
-    public void generateSeasonStats(){
+    public void generateSeasonStats(Integer year){
         try {
             // Create an object of filereader
             // class with CSV file as a parameter.
             FileReader filereader;
             if ( POSITION.equals("WR") || POSITION.equals("TE") ) {
                 seasonStats = new WRSeasonStats();
-                filereader = new FileReader(Utils.RECEIVING23);
+                if ( year == 2023 ) filereader = new FileReader(Utils.RECEIVING23);
+                else if ( year == 2022 ) filereader = new FileReader(Utils.RECEIVING22);
+                else if ( year == 2021 ) filereader = new FileReader(Utils.RECEIVING21);
+                else filereader = new FileReader(Utils.RECEIVING23);
             } else if ( POSITION.equals("QB") ) {
                 seasonStats = new QBSeasonStats();
-                filereader = new FileReader(Utils.PASSING23);
+                if ( year == 2023 ) filereader = new FileReader(Utils.PASSING23);
+                else if ( year == 2022 ) filereader = new FileReader(Utils.PASSING22);
+                else if ( year == 2021 ) filereader = new FileReader(Utils.PASSING21);
+                else filereader = new FileReader(Utils.PASSING23);
             }
             else {
                 seasonStats = new RBSeasonStats();
-                filereader = new FileReader(Utils.RUSHING23);
+                if ( year == 2023 ) filereader = new FileReader(Utils.RUSHING23);
+                else if ( year == 2022 ) filereader = new FileReader(Utils.RUSHING22);
+                else if ( year == 2021 ) filereader = new FileReader(Utils.RUSHING21);
+                else filereader = new FileReader(Utils.RUSHING23);
             }
             // create csvReader object passing
             // file reader as a parameter
@@ -92,9 +103,12 @@ public class Player {
                         seasonStats.setSackYards(Integer.valueOf(nextRecord[26]));
                         seasonStats.setSackPct(nextRecord[27]);
                         seasonStats.setNypa(Double.valueOf(nextRecord[28]));
-                        seasonStats.setAnypa(Double.valueOf(nextRecord[29]));
-                        seasonStats.setComebacks(Integer.valueOf(nextRecord[30]));
-                        seasonStats.setGwd(Integer.valueOf(nextRecord[31]));
+                        if ( nextRecord[29].isEmpty() ) seasonStats.setAnypa(0);
+                        else seasonStats.setAnypa(Integer.valueOf(nextRecord[29]));
+                        if ( nextRecord[30].isEmpty() ) seasonStats.setComebacks(0);
+                        else seasonStats.setComebacks(Integer.valueOf(nextRecord[30]));
+                        if ( nextRecord[31].isEmpty() ) seasonStats.setGwd(0);
+                        else seasonStats.setGwd(Integer.valueOf(nextRecord[31]));
                         seasonStats.setId(nextRecord[32]);
                     }
                     else {
@@ -252,8 +266,13 @@ public class Player {
         return GAME_LOG;
     }
 
+    public PlayerSeasonStats getSEASON_STATS(int year) {
+        generateSeasonStats(year);
+        return seasonStats;
+    }
+
     public PlayerSeasonStats getSEASON_STATS() {
-        if ( seasonStats == null ) generateSeasonStats();
+        generateSeasonStats(YEAR);
         return seasonStats;
     }
 }
