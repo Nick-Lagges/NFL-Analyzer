@@ -8,7 +8,7 @@ public class Main {
             Utils utils = new Utils();
             DefenseStats defenseStats = new DefenseStats(2022);
             //ModelOne model = new ModelOne(2021);
-            Player moore = new Player("DJ Moore", 2023);
+            Player moore = new Player("AJ Brown", 2023);
 
             /*
             double line;
@@ -52,15 +52,21 @@ public class Main {
                 act = game.getREC();
                 //c = ( ( (pred > line) && (act > line) ) || ( (pred < line) && (act < line) ) );
                 //if ( c ) correct++;
-                //if ( game.getFeelsLike() > 34 && game.getFeelsLike() < 80 && game.getWindSpeed() < 10 ) {
-                    //String formattedString = String.format("{ %f, %f, %f, %f, %f, %f },", team.getReceptionsPG(), game.getWindSpeed(), game.getFeelsLike(), team.getExpectedPointsPG(), team.getFirstDownsPG(), avgRec);
+                if ( (game.getRecLine() != 0 ) && game.getREC() != -1 )  {
+                    /*String formattedString = String.format("{ %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f },",
+                            game.getFeelsLike(), game.getWindSpeed(), game.getPrecipitation(), game.getVisibility(), game.getRecLine(),
+                            game.getCloudCover(), game.getDewPoint(), game.getHumidity(), game.getWindGust(), team.getReceptionsPG(),
+                            team.getTargetsPG(), team.getExpectedPointsPG(), team.getPointsPG(), team.getYardsPG(), team.getPlaysPG(),
+                            team.getYardsPerPlay(), team.getTurnoversPG(), team.getFumblesPG(), team.getFirstDownsPG(), team.getPassCompsPG(),
+                            team.getPassAttPG(), team.getPassTDPG(), team.getPassIntPG(), team.getPassFirstDownsPG(), team.getPenaltiesPG(),
+                            team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getExpectedPointsPG(), avgRec);
+                    System.out.println(formattedString);*/
+                    //String formattedString = String.format("{ %.4f, %.4f, %.4f, %.4f, %.4f },",
+                    //       team.getReceptionsPG(), game.getWindSpeed(), game.getFeelsLike(), team.getExpectedPointsPG(), team.getFirstDownsPG());
                     //System.out.println(formattedString);
-                System.out.println(game.getREC());
-                totalRec += game.getREC();
-                gamesPlayed++;
-                avgRec = totalRec/gamesPlayed;
-                //}
-            }
+                    System.out.print(game.getREC_YD() + ", ");
+                }
+            };
 
             /*
             double line;
