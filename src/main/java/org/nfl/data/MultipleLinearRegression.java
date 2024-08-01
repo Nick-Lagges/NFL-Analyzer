@@ -92,7 +92,7 @@ public class MultipleLinearRegression {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        /*
+
         double[][] x = {
                 { 80.100000, 7.000000, 0.000000, 9.900000, 3.500000, 79.600000, 54.100000, 40.760000, 0.000000, 11.000000, 16.600000, -3.760000, 21.800000, 336.500000, 58.300000, 5.800000, 1.410000, 0.410000, 18.900000, 18.500000, 28.100000, 1.290000, 1.000000, 9.590000, 5.880000, 1.710000, 38.200000, -3.760000, 3.705882 },
                 { 102.900000, 11.700000, 0.000000, 9.800000, 3.500000, 53.100000, 75.900000, 61.770000, 0.000000, 12.600000, 20.200000, -2.150000, 21.100000, 324.300000, 63.100000, 5.100000, 1.180000, 0.590000, 18.500000, 21.400000, 33.500000, 1.710000, 0.590000, 10.900000, 5.710000, 1.470000, 33.000000, -2.150000, 2.000000 },
@@ -176,8 +176,8 @@ public class MultipleLinearRegression {
                 };
         double[] y = { 2, 6, 3, 8, 8, 5, 8, 4, 3, 5, 7, 11, 6, 4, 3, 9, 4, 6, 6, 13, 8, 4, 2, 7, 1, 4, 6, 7, 5, 7, 8, 1, 13, 5, 6, 8, 18, 3, 7, 4, 8, 8, 11, 10, 14, 5, 6, 7, 4, 9, 9, 6, 7, 10, 8, 7, 1, 5, 8, 9, 5, 6, 4, 11, 5, 9, 3, 8, 6, 11, 8, 8, 10, 9, 5, 4, 9, 6, 7, };
 
-         */
-        double[][] x = {
+
+       /* double[][] x = {
                 { 10.7000, 0.0000, 70.0000, -4.9700, 18.7000 },
                 { 12.2000, 3.8000, 65.4000, 3.2600, 18.5000 },
                 { 11.7000, 12.0000, 96.9000, 0.4300, 19.1000 },
@@ -189,11 +189,11 @@ public class MultipleLinearRegression {
                 { 13.1000, 13.8000, 52.7000, -3.8600, 19.8000 },
                 { 12.2000, 8.1000, 83.1000, -7.7700, 21.2000 },
 
-        };
-        double[] y = { 215, 40, 157, 58, 181, 163, 88, 112, 62, 146 };
+        }; */
+        //double[] y = { 215, 40, 157, 58, 181, 163, 88, 112, 62, 146 };
         MultipleLinearRegression regression = new MultipleLinearRegression(x, y);
 
-        /*System.out.printf("%.4fa + %.4fb + %.4fc + %.4fd + %.4fe + %.4ff + %.4fg + %.4fh + %.4fi + %.4fj + %.4fk + %.4fl + %.4fm + %.4fn + %.4fo + %.4fp + %.4fq + %.4fr + %.4fs + %.4ft + %.4fu + %.4fv + %.4fw + %.4fx + %.4fy + %.4fz + %.4fa1 + %.4fb1 (R^2 = %.2f)\n",
+        System.out.printf("%.4fa + %.4fb + %.4fc + %.4fd + %.4fe + %.4ff + %.4fg + %.4fh + %.4fi + %.4fj + %.4fk + %.4fl + %.4fm + %.4fn + %.4fo + %.4fp + %.4fq + %.4fr + %.4fs + %.4ft + %.4fu + %.4fv + %.4fw + %.4fx + %.4fy + %.4fz + %.4fa1 + %.4fb1 (R^2 = %.2f)\n",
                 regression.beta(0), regression.beta(1), regression.beta(2), regression.beta(3),
                 regression.beta(4), regression.beta(5), regression.beta(6), regression.beta(7),
                 regression.beta(8), regression.beta(9), regression.beta(10), regression.beta(11),
@@ -203,10 +203,10 @@ public class MultipleLinearRegression {
                 regression.beta(24), regression.beta(25), regression.beta(26), regression.beta(27),
                 regression.R2());
 
-         */
-        System.out.printf("%.4fa + %.4fb + %.4fc + %.4fd + %.4fe | (R^2 = %.2f)\n",
-                regression.beta(0), regression.beta(1), regression.beta(2), regression.beta(3), regression.beta(4), regression.R2());
 
+        /*System.out.printf("%.4fa + %.4fb + %.4fc + %.4fd + %.4fe | (R^2 = %.2f)\n",
+                regression.beta(0), regression.beta(1), regression.beta(2), regression.beta(3), regression.beta(4), regression.R2());
+        */
     }
 
 }

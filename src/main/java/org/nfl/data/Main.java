@@ -1,14 +1,28 @@
 package org.nfl.data;
 
-import java.util.stream.StreamSupport;
-
 public class Main {
     public static void main(String[] args) {
         try {
             Utils utils = new Utils();
+            String[] first7 = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman" };
+            String[] second7 = { "Stefon Diggs", "Ja'Marr Chase", "Davante Adams", "Adam Thielen", "Garrett Wilson", "Chris Olave", "Chris Godwin" };
+            String[] third6 = { "Mike Evans", "DeVonta Smith", "Nico Collins", "Amari Cooper", "Jaylen Waddle", "Justin Jefferson" };
             DefenseStats defenseStats = new DefenseStats(2022);
             //ModelOne model = new ModelOne(2021);
-            Player moore = new Player("AJ Brown", 2023);
+            Player player = null;
+            TeamDefense team = null;
+            for ( String name : first7) {
+                player = new Player(name, 2023);
+                for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
+                    for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES()) {
+                        if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
+                            team = teamDefense;
+                    }
+                    if ((game.getRecLine() != 0) && game.getREC() != -1) {
+                        System.out.println("indep.add(" + team.getReceptionsPG() + ", " + game.getREC() + ");");
+                    }
+                }
+            }
 
             /*
             double line;
@@ -30,7 +44,7 @@ public class Main {
                     }
             }
             */
-
+            /*
             double line;
             double pred;
             int act;
@@ -42,7 +56,6 @@ public class Main {
             double avgRec = 0.0;
             if ( stats.getGames() != 0 )
                 avgRec = (double) stats.getReceptions() / stats.getGames();
-            TeamDefense team = null;
             for ( PlayerGame game : moore.getGAME_LOG().GAME_LOG ){
                 for ( TeamDefense teamDefense : defenseStats.getNFL_DEFENSES() ){
                     if ( teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())) ) team = teamDefense;
@@ -60,13 +73,13 @@ public class Main {
                             team.getYardsPerPlay(), team.getTurnoversPG(), team.getFumblesPG(), team.getFirstDownsPG(), team.getPassCompsPG(),
                             team.getPassAttPG(), team.getPassTDPG(), team.getPassIntPG(), team.getPassFirstDownsPG(), team.getPenaltiesPG(),
                             team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getExpectedPointsPG(), avgRec);
-                    System.out.println(formattedString);*/
+                    System.out.println(formattedString);
                     //String formattedString = String.format("{ %.4f, %.4f, %.4f, %.4f, %.4f },",
                     //       team.getReceptionsPG(), game.getWindSpeed(), game.getFeelsLike(), team.getExpectedPointsPG(), team.getFirstDownsPG());
                     //System.out.println(formattedString);
-                    System.out.print(game.getREC_YD() + ", ");
+                    System.out.println("indep.add(" + game.getFeelsLike() + ", " + game.getREC() + ");");
                 }
-            };
+            }; */
 
             /*
             double line;
