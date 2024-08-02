@@ -101,6 +101,7 @@ public class PlayerSearch {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
             String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
             for ( String statRecord : statList ) {
+                if (!statRecord.isEmpty())
                 stat.add(Integer.valueOf(statRecord));
             }
             if ( ! statName.equals("week") ){ stat.removeLast(); }
