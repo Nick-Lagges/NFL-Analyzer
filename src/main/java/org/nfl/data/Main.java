@@ -5,6 +5,20 @@ import java.util.Random;
 public class Main {
     public static void main(String[] args) {
         try {
+            /*
+            (Intercept)              249.7770    87.8396   2.844  0.00593 **
+            `team.getReceptionsPG()`   2.4298     0.8311   2.923  0.00474 **
+            `team.getTargetsPG()`     -1.6241     0.6543  -2.482  0.01560 *
+            `team.getYardsPG()`        0.6744     0.2425   2.781  0.00706 **
+            `team.getPlaysPG()`       -3.4380     1.3782  -2.495  0.01512 *
+            `team.getYardsPerPlay()` -41.4877    15.0406  -2.758  0.00751 **
+            `team.getFirstDownsPG()`  -0.9659     0.5440  -1.776  0.08040 .
+            `team.getPassAttPG()`     -0.4656     0.2765  -1.684  0.09694 .
+            avgRec                     0.6398     0.2616   2.445  0.01715 *
+                ---
+            Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+             */
             Utils utils = new Utils();
             Random rand = new Random();
             String[] first7 = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman" };
@@ -13,20 +27,22 @@ public class Main {
             DefenseStats defenseStats = new DefenseStats(2022);
             Player player = null;
             TeamDefense team = null;
-            //for ( String name : third6 ) {
-                player = new Player("Nico Collins", 2023);
+            for ( String name : first7 ) {
+                player = new Player(name, 2023);
                 for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
                     for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES()) {
                         if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
                             team = teamDefense;
                     }
                     if ((game.getRecLine() != 0) && game.getREC() != -1) {
-                        System.out.println("indep.add(" + team.getExpectedPointsPG() + ", " + game.getREC() + ");");
+                        System.out.println("indep.add(" + team.getPassTDPG() + ", " + game.getREC() + ");");
                     }
                 }
+
+
                 //break;
                 //Thread.sleep(rand.nextInt(500,1000));
-            //}
+            }
 
             /*
             double line;

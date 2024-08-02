@@ -1,10 +1,14 @@
 package org.nfl.data;
 
+import org.jfree.io.FileUtilities;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
@@ -28,11 +32,37 @@ public class PlayerSearch {
     public PlayerSearch(String name, int year) throws IOException, InterruptedException {
         NAME = name;
         YEAR = year;
-        URL = pathGetter();
-        DOCUMENT = Jsoup.connect(URL).get();
+
+        String[] nameList = NAME.split(" ");
+        StringBuilder filename = new StringBuilder();
+        nameList[0] = nameList[0].toLowerCase();
+        for ( String s : nameList ){
+            filename.append(s);
+        }
+        filename.append(YEAR).append(".html");
+        String path = System.getProperty("user.dir") + "\\database\\statistics\\gamelogs";
+        String fullPath = path + "\\" + filename;
+        boolean check = new File(path, filename.toString()).exists();
+        if ( check ) DOCUMENT = Jsoup.parse(new File(System.getProperty("user.dir") + "\\database\\statistics\\gamelogs", filename.toString()));
+        else {
+            URL = pathGetter();
+            DOCUMENT = Jsoup.connect(URL).get();
+            makeFile(DOCUMENT, fullPath);
+        }
         POSITION_INFO = getPosition();
         TEAM = Utils.ABBR_TO_TEAM.get(getStatString("team").getFirst().toLowerCase());
         //Thread.sleep(500 + rand.nextInt(1500));
+    }
+
+    private void makeFile(Document doc, String filename) throws IOException {
+        File file = new File(filename);
+        BufferedWriter out = new BufferedWriter(new FileWriter(file,true));
+        try{
+            out.write(String.valueOf(Jsoup.parse(doc.outerHtml())));
+            out.newLine();
+        } finally {
+            out.close();
+        }
     }
 
     private String getPosition() {

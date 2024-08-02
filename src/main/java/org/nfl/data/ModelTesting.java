@@ -12,9 +12,11 @@ import org.jfree.ui.RefineryUtilities;
 import java.io.IOException;
 
 public class ModelTesting extends ApplicationFrame {
+    private String[] playerList = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Ja'Marr Chase", "Davante Adams", "Adam Thielen", "Garrett Wilson", "Chris Olave", "Chris Godwin" };
+    private TeamDefense team = null;
+    private DefenseStats defenseStats = new DefenseStats(2022);
 
-
-    public ModelTesting() {
+    public ModelTesting() throws IOException, InterruptedException {
         super("testing");
 
         JFreeChart barChart;
@@ -29,12 +31,11 @@ public class ModelTesting extends ApplicationFrame {
         chartPanel.setPreferredSize(new java.awt.Dimension( 560 , 367 ) );
         setContentPane( chartPanel );
     }
-
-    XYDataset createDataset() {
+    XYDataset createDataset() throws IOException, InterruptedException {
         XYSeriesCollection dataset = new XYSeriesCollection();
         XYSeries indep = new XYSeries("stat");
 
-        indep = expectedPGVsRec(indep);
+        indep = passTdPGVsRec(indep);
 
         dataset.addSeries(indep);
 
@@ -2190,13 +2191,31 @@ public class ModelTesting extends ApplicationFrame {
         return indep;
     }
 
+    public XYSeries passTdPGVsRec(XYSeries indep) throws IOException, InterruptedException {
+        Player player = null;
+        for ( String name : playerList ) {
+            player = new Player(name, 2023);
+            for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
+                for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES() ) {
+                    if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
+                        team = teamDefense;
+                }
+                if ((game.getRecLine() != 0) && game.getREC() != -1) {
+                    indep.add(team.getPassAttPG(), game.getREC());
+                }
+            }
+
+        }
+        return indep;
+    }
+
     public void start() {
         this.pack( );
         RefineryUtilities.centerFrameOnScreen( this );
         this.setVisible( true );
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ModelTesting modelTesting = new ModelTesting();
         modelTesting.start();
     }
