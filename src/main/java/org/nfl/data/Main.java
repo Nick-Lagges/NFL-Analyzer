@@ -3,7 +3,11 @@ package org.nfl.data;
 import java.util.Random;
 
 public class Main {
-    private static String[] playerList = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Ja'Marr Chase", "Davante Adams", "Adam Thielen", "Garrett Wilson", "Chris Olave", "Chris Godwin", "Mike Evans", "DeVonta Smith", "Nico Collins", "Amari Cooper", "Jaylen Waddle", "Justin Jefferson" };
+    private static String[] playerList = { "Tee Higgins", "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill",
+            "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Diontae Johnson", "Davante Adams",
+            "Adam Thielen", "Tyler Lockett", "Christian Kirk", "Chris Godwin", "Mike Evans",
+            "DeVonta Smith", "Amari Cooper", "DeAndre Hopkins", "Justin Jefferson",
+            "Amon-Ra St. Brown", "Cooper Kupp", "Terry McLaurin", "DK Metcalf", "Deebo Samuel" };
 
     public static void main(String[] args) {
         try {
@@ -22,12 +26,13 @@ opp.getPassTDPG            -1.33456    0.76464  -1.745 0.081948 .
 opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
 
              */
+
             Utils utils = new Utils();
             Player player = null;
             TeamDefense team = null;
-            DefenseStats defenseStats = new DefenseStats(2022);
-            /*
-            ModelC model = new ModelC(2022);
+            //DefenseStats defenseStats = new DefenseStats(2022);
+
+
             double line;
             double pred;
             int act;
@@ -38,48 +43,54 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             int realUnders = 0;
             int correctOvers = 0;
             int correctUnders = 0;
-            for (String name : playerList) {
-                player = new Player(name, 2023);
-                System.out.println(name);
-                PlayerSeasonStats stats = player.getSEASON_STATS(2022);
-                double avgRec = (double) stats.getReceptions() / stats.getGames();
-                for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
-                    line = game.getRecLine();
-                    if (line != 0.0 && game.getREC() != -1 ) {
-                        pred = model.performModel("receptions", game);
-                        act = game.getREC();
-                        c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
-                        double conf = Math.abs(pred-line);
-                        double diff = Math.abs(pred-act);
-                        if ( pred != -1.0000 ) {
-                            if (c) {
-                                correct++;
-                                if (pred < line) correctUnders++;
-                                else correctOvers++;
-                                if ( act > line ) {
+            double minPred = 10000;
+            double maxPred = -10000;
+            for (int i = 2022; i < 2024; i++) {
+                ModelC model = new ModelC(i-1);
+                for (String name : playerList) {
+                    player = new Player(name, i);
+                    System.out.println(name);
+                    PlayerSeasonStats stats = player.getSEASON_STATS(i-1);
+                    double avgRec = (double) stats.getReceptions() / stats.getGames();
+                    for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
+                        line = game.getRecLine();
+                        if (line != 0.0 && game.getREC() != -1) {
+                            pred = model.performModel("receptions", game);
+                            act = game.getREC();
+                            c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
+                            double conf = Math.abs(pred - line);
+                            double diff = Math.abs(pred - act);
+                            if (pred != -1.0000) {
+                                if (c) {
+                                    correct++;
+                                    if (pred < line) correctUnders++;
+                                    else correctOvers++;
+                                    if (act > line) {
+                                    } else {
+                                    }
                                 } else {
                                 }
-                            } else {
-                            }
-                            if (act > line) {
-                                realOvers++;
-                            }
-                            else {
-                                realUnders++;
+                                if (act > line) {
+                                    realOvers++;
+                                } else {
+                                    realUnders++;
 
+                                }
+                                minPred = Math.min(minPred, pred);
+                                maxPred = Math.max(maxPred, pred);
+                                gameNum++;
+                                String formatS = String.format("correct: %d | total: %d | line: %f | prediction: %f | actual: %d | percent: %f%%", correct, gameNum, line, pred, act, ((double) correct / gameNum * 100));
+                                System.out.println(formatS);
+                                //String formattedString = String.format("2.5 %d-%d | 3.5 %d-%d | 4.5 %d-%d | 5.0 %d-%d | 5.5 %d-%d | 6.5 %d-%d | 7.5 %d-%d", twopointfiveC, twopointfiveO, threepointfiveC, threepointfiveO, fourpointfiveC, fourpointfiveO, fivepointC, fivepointO, fivepointfiveC, fivepointfiveO, sixpointfiveC, sixpointfiveO, sevenpointfiveC, sevenpointfiveO);
+                                //System.out.println(formattedString);
                             }
-                            gameNum++;
-                            String formatS = String.format("correct: %d | total: %d | line: %f | prediction: %f | actual: %d", correct, gameNum, line, pred, act);
-                            System.out.println(formatS);
-                            //String formattedString = String.format("2.5 %d-%d | 3.5 %d-%d | 4.5 %d-%d | 5.0 %d-%d | 5.5 %d-%d | 6.5 %d-%d | 7.5 %d-%d", twopointfiveC, twopointfiveO, threepointfiveC, threepointfiveO, fourpointfiveC, fourpointfiveO, fivepointC, fivepointO, fivepointfiveC, fivepointfiveO, sixpointfiveC, sixpointfiveO, sevenpointfiveC, sevenpointfiveO);
-                            //System.out.println(formattedString);
                         }
                     }
                 }
             }
 
-            */
 
+            /*
             //System.out.println("");
             boolean over = false;
             int o = 0;

@@ -101,10 +101,11 @@ public class PlayerSearch {
             String node = "td[data-stat=\"" + STAT_TO_ID.get(statName) + "\"]";
             String[] statList = DOCUMENT.getElementById("stats").select(node).text().split(" ");
             for ( String statRecord : statList ) {
-                if (!statRecord.isEmpty())
-                stat.add(Integer.valueOf(statRecord));
+                if (!statRecord.isEmpty()) {
+                    stat.add(Integer.valueOf(statRecord));
+                } else if ( NAME.equals("Tee Higgins") ) stat.add(0);
             }
-            if ( ! statName.equals("week") ){ stat.removeLast(); }
+            if ( ! statName.equals("week") && stat.size() > 0 ){ stat.removeLast(); }
             return stat;
         } catch ( Exception e ) {
             e.printStackTrace();

@@ -222,11 +222,13 @@ public class Player {
                     playerGame.setREC_YD(REC_YD.get(i));
                     playerGame.setREC_TD(REC_TD.get(i));
                     try {
-                        playerGame.setRUSH_ATT(RUSH_ATT.get(i));
-                        playerGame.setRUSH_YD(RUSH_YD.get(i));
-                        playerGame.setRUSH_TD(RUSH_TD.get(i));
+                        if ( RUSH_ATT.size() > i ) {
+                            playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                            playerGame.setRUSH_YD(RUSH_YD.get(i));
+                            playerGame.setRUSH_TD(RUSH_TD.get(i));
+                        }
                     }
-                    catch (NullPointerException e){
+                    catch (Exception e){
                         playerGame.setRUSH_ATT(0);
                         playerGame.setRUSH_YD(0);
                         playerGame.setRUSH_TD(0);

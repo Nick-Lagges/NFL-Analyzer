@@ -224,17 +224,11 @@ public class ModelTesting extends ApplicationFrame {
 
     public XYSeries modelTester(XYSeries indep, boolean correctness) throws IOException, InterruptedException {
         Player player = null;
-        ModelA modelA = new ModelA(2022);
+        ModelD modelA = new ModelD(2022);
         double line;
         double pred;
         int act;
         boolean c;
-        int correct = 0;
-        int gameNum = 1;
-        int realOvers = 0;
-        int realUnders = 0;
-        int correctOvers = 0;
-        int correctUnders = 0;
         for (String name : playerList) {
             player = new Player(name, 2023);
             PlayerSeasonStats stats = player.getSEASON_STATS(2022);
@@ -242,23 +236,16 @@ public class ModelTesting extends ApplicationFrame {
             for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
                 line = game.getRecLine();
                 if (line != 0.0) {
-                    pred = modelA.performModel("receptions", game, avgRec, line);
+                    pred = modelA.performModel("receptions", game);
                     act = game.getREC();
-                    c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
-                    double conf = pred-line;
-                    double diff = pred-act;
-                    if (c){
-                        correct++;
-                        if ( pred < line ) correctUnders++;
-                        else  correctOvers++;
-                        if (correctness) indep.add(game.getRecLine(), game.getREC());
+                    //c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
+                    if (act > line){
+                        if (correctness) indep.add(pred, game.getRecLine());
                     }
                     else {
-                        if (!correctness) indep.add(game.getRecLine(), game.getREC());
+                        if (!correctness) indep.add(pred, game.getRecLine());
                     }
-                    if ( act > line ) realOvers++;
-                    else realUnders++;
-                    gameNum++;
+
                 }
             }
         }
