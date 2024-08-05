@@ -104,7 +104,7 @@ public class Player {
                         seasonStats.setSackPct(nextRecord[27]);
                         seasonStats.setNypa(Double.valueOf(nextRecord[28]));
                         if ( nextRecord[29].isEmpty() ) seasonStats.setAnypa(0);
-                        else seasonStats.setAnypa(Integer.valueOf(nextRecord[29]));
+                        else seasonStats.setAnypa(Double.valueOf(nextRecord[29]));
                         if ( nextRecord[30].isEmpty() ) seasonStats.setComebacks(0);
                         else seasonStats.setComebacks(Integer.valueOf(nextRecord[30]));
                         if ( nextRecord[31].isEmpty() ) seasonStats.setGwd(0);
@@ -248,9 +248,16 @@ public class Player {
                     playerGame.setPASS_COMP(PASS_COMP.get(i));
                     playerGame.setPASS_YD(PASS_YD.get(i));
                     playerGame.setPASS_INT(PASS_INT.get(i));
-                    playerGame.setRUSH_ATT(RUSH_ATT.get(i));
-                    playerGame.setRUSH_YD(RUSH_YD.get(i));
-                    playerGame.setRUSH_TD(RUSH_TD.get(i));
+                    if ( RUSH_ATT.size() != 0 ) {
+                        playerGame.setRUSH_ATT(RUSH_ATT.get(i));
+                        playerGame.setRUSH_YD(RUSH_YD.get(i));
+                        playerGame.setRUSH_TD(RUSH_TD.get(i));
+                    }
+                    else {
+                        playerGame.setRUSH_ATT(0);
+                        playerGame.setRUSH_YD(0);
+                        playerGame.setRUSH_TD(0);
+                    }
                 }
                 playerGame.setOFF_SNAP(OFF_SNAP.get(i));
                 playerGame.setAllLines(lineSearch);

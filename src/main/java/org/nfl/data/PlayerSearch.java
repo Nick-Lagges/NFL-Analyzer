@@ -104,6 +104,7 @@ public class PlayerSearch {
                 if (!statRecord.isEmpty()) {
                     stat.add(Integer.valueOf(statRecord));
                 } else if ( NAME.equals("Tee Higgins") ) stat.add(0);
+                else if (NAME.equals("Aaron Rodgers") && YEAR == 2023) stat.add(0);
             }
             if ( ! statName.equals("week") && stat.size() > 0 ){ stat.removeLast(); }
             return stat;
