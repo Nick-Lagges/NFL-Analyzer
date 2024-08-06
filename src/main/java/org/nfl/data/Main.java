@@ -1,13 +1,15 @@
 package org.nfl.data;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
-    private static String[] wrList = { "Tee Higgins", "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill",
+    private static String[] wrList = { "Tee Higgins", "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", }; /*
             "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Diontae Johnson", "Davante Adams",
             "Adam Thielen", "Tyler Lockett", "Christian Kirk", "Chris Godwin", "Mike Evans",
             "DeVonta Smith", "Amari Cooper", "DeAndre Hopkins", "Justin Jefferson",
             "Amon-Ra St. Brown", "Cooper Kupp", "Terry McLaurin", "DK Metcalf", "Deebo Samuel" };
+            */
     private static String[] qbList = { "Patrick Mahomes", "Josh Allen", "Justin Herbert", "Derek Carr", "Jared Goff",
             "Kirk Cousins", "Matthew Stafford", "Joe Burrow", "Russell Wilson", "Geno Smith",
             "Dak Prescott", "Baker Mayfield", "Tua Tagovailoa", "Aaron Rodgers", "Kyler Murray",
@@ -51,7 +53,8 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             int correctUnders = 0;
             double minPred = 10000;
             double maxPred = -10000;
-            for (int i = 2022; i < 2024; i++) {
+            ArrayList<Integer> actual = new ArrayList<>();
+            for (int i = 2023; i < 2024; i++) {
                 SuccessModel model = new SuccessModel(i-1);
                 for (String name : wrList) {
                     player = new Player(name, i);
@@ -59,6 +62,10 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                     PlayerSeasonStats stats = player.getSEASON_STATS(i-1);
                     double avgAtt = (double) stats.getAttempts() / stats.getGames();
                     for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
+                        for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES()) {
+                            if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
+                                team = teamDefense;
+                        }
                         line = game.getRecLine();
                         if (line != 0.0 && game.getREC() != -1) {
                             pred = model.performModel("receptions", game, avgAtt);
@@ -85,10 +92,11 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                 minPred = Math.min(minPred, pred);
                                 maxPred = Math.max(maxPred, pred);
                                 gameNum++;
-                                String formatS = String.format("correct: %d | total: %d | line: %f | prediction: %f | actual: %d | percent: %f%%", correct, gameNum, line, pred, act, ((double) correct / gameNum * 100));
-                                //String formatS = String.format("%f, %d, %f, %f, %f, %f, %f, %f, %f, %d, %f",
-                                 //       line, act, pred, conf, diff,
-                                 //       team.getTargetsPG(), team.getYardsPerPlay(), team.getScoresPerOffDrivePG(), game.getRecLine(), game.getWEEK(), game.getRecYdLine());
+                                actual.add(act);
+                                //String formatS = String.format("correct: %d | total: %d | line: %f | prediction: %f | actual: %d | percent: %f%%", correct, gameNum, line, pred, act, ((double) correct / gameNum * 100));
+                                String formatS = String.format("{ %f, %f, %f, %f, %d, %f }, ",
+                                        //line, act, pred, conf, diff,
+                                       team.getTargetsPG(), team.getYardsPerPlay(), team.getScoresPerOffDrivePG(), game.getRecLine(), game.getWEEK(), game.getRecYdLine());
                                 System.out.println(formatS);
                                 //String formattedString = String.format("2.5 %d-%d | 3.5 %d-%d | 4.5 %d-%d | 5.0 %d-%d | 5.5 %d-%d | 6.5 %d-%d | 7.5 %d-%d", twopointfiveC, twopointfiveO, threepointfiveC, threepointfiveO, fourpointfiveC, fourpointfiveO, fivepointC, fivepointO, fivepointfiveC, fivepointfiveO, sixpointfiveC, sixpointfiveO, sevenpointfiveC, sevenpointfiveO);
                                 //System.out.println(formattedString);
@@ -96,6 +104,9 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                         }
                     }
                 }
+            }
+            for ( Integer i : actual ) {
+                System.out.print(i + ", ");
             }
 
 
