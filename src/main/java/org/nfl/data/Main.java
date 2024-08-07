@@ -38,7 +38,7 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             TeamDefense team = null;
             Random rand = new Random();
             DefenseStats defenseStats = new DefenseStats(2022);
-            RandomForestRegressor randForest = new RandomForestRegressor();
+            RandomForestRegressor randForest = new RandomForestRegressor(2);
             //player = new Player("Ryan Tannehill", 2023);
             //player.getGAME_LOG();
 
@@ -76,32 +76,35 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                     team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getYardsPG(), game.getFeelsLike(), game.getWindSpeed(),
                                     game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar} );
                             act = game.getREC();
-                            c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
                             double conf = Math.abs(pred - line);
-                            double diff = Math.abs(pred - act);
-                            if (c) {
-                                correct++;
-                                if (pred < line) correctUnders++;
-                                else correctOvers++;
-                                if (act > line) {
+                            if ( conf > 0 ) {
+                                c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
+
+                                double diff = Math.abs(pred - act);
+                                if (c) {
+                                    correct++;
+                                    if (pred < line) correctUnders++;
+                                    else correctOvers++;
+                                    if (act > line) {
+                                    } else {
+                                    }
                                 } else {
                                 }
-                            } else {
-                            }
-                            if (act > line) {
-                                realOvers++;
-                            } else {
-                                realUnders++;
+                                if (act > line) {
+                                    realOvers++;
+                                } else {
+                                    realUnders++;
 
+                                }
+                                minPred = Math.min(minPred, pred);
+                                maxPred = Math.max(maxPred, pred);
+                                gameNum++;
+                                String formatS = String.format("correct: %d | total: %d | line: %.2f | prediction: %.3f | actual: %d | percent: %.2f%%", correct, gameNum, line, pred, act, ((double) correct / gameNum * 100));
+                                //String formatS = String.format("{ %f, %f, %f, %f, %d, %f }, ",
+                                //line, act, pred, conf, diff,
+                                //       team.getTargetsPG(), team.getYardsPerPlay(), team.getScoresPerOffDrivePG(), game.getRecLine(), game.getWEEK(), game.getRecYdLine());
+                                System.out.println(formatS);
                             }
-                            minPred = Math.min(minPred, pred);
-                            maxPred = Math.max(maxPred, pred);
-                            gameNum++;
-                            String formatS = String.format("correct: %d | total: %d | line: %f | prediction: %f | actual: %d | percent: %f%%", correct, gameNum, line, pred, act, ((double) correct / gameNum * 100));
-                            //String formatS = String.format("{ %f, %f, %f, %f, %d, %f }, ",
-                            //line, act, pred, conf, diff,
-                            //       team.getTargetsPG(), team.getYardsPerPlay(), team.getScoresPerOffDrivePG(), game.getRecLine(), game.getWEEK(), game.getRecYdLine());
-                            System.out.println(formatS);
                             //String formattedString = String.format("2.5 %d-%d | 3.5 %d-%d | 4.5 %d-%d | 5.0 %d-%d | 5.5 %d-%d | 6.5 %d-%d | 7.5 %d-%d", twopointfiveC, twopointfiveO, threepointfiveC, threepointfiveO, fourpointfiveC, fourpointfiveO, fivepointC, fivepointO, fivepointfiveC, fivepointfiveO, sixpointfiveC, sixpointfiveO, sevenpointfiveC, sevenpointfiveO);
                             //System.out.println(formattedString);
                         }

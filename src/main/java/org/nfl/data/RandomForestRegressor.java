@@ -23,14 +23,14 @@ public class RandomForestRegressor {
     private static RandomForest model;
     private static StructType structType;
 
-    public RandomForestRegressor() throws IOException, ClassNotFoundException {
-        FileReader fileReader = new FileReader("C:\\Users\\nlagges\\Documents\\NFL-Analyzer\\database\\statistics\\randomForestData.csv");
+    public RandomForestRegressor(int version) throws IOException, ClassNotFoundException {
+        FileReader fileReader = new FileReader("C:\\Users\\nlagges\\Documents\\NFL-Analyzer\\database\\statistics\\randomForestData1.csv");
         CSVReader csvReader = new CSVReader(fileReader);
         String[] nextRecord;
         // we are going to read data line by line
         ArrayList<String[]> lines = new ArrayList<>();
         while ( (nextRecord = csvReader.readNext()) != null ) {
-            if ( ! nextRecord[0].contains("ReceptionsPG") ) lines.add(nextRecord);
+            if ( ! nextRecord[0].contains("PG") ) lines.add(nextRecord);
         }
         String[][] array = new String[lines.size()][0];
         String[][] vars = lines.toArray(array);
@@ -51,9 +51,9 @@ public class RandomForestRegressor {
 
         // Create and train the Random Forest model
         model = RandomForest.fit(formula, data);
-        createStructure();
+        createStructure1();
     }
-    private void createStructure() throws ClassNotFoundException {
+    private void createStructure1() throws ClassNotFoundException {
         DataType dType = DataType.of("double");
         DataType iType = DataType.of("int");
         StructField a = new StructField("V1", dType);
