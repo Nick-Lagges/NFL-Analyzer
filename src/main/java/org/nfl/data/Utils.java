@@ -26,7 +26,7 @@ public class Utils {
     public final static String VSWR22 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs2022.csv";
     public final static String VSWR21 = System.getProperty("user.dir") + "\\database\\statistics\\VsWRs2021.csv";
 
-    public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather2023.csv";
+    public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeatherRevised2023.csv";
 
     public final static String DOMED_TEAMS = "cardinals, falcons, cowboys, lions, texans, colts, raiders, chargers, rams, vikings, saints";
 
