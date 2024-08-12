@@ -24,7 +24,7 @@ public class RandomForestRegressor {
     private static StructType structType;
 
     public RandomForestRegressor(int version) throws IOException, ClassNotFoundException {
-        FileReader fileReader = new FileReader("C:\\Users\\nlagges\\Documents\\NFL-Analyzer\\database\\statistics\\randomForestData1.csv");
+        FileReader fileReader = new FileReader(Utils.RANDOM_FOREST_DATA);
         CSVReader csvReader = new CSVReader(fileReader);
         String[] nextRecord;
         // we are going to read data line by line
