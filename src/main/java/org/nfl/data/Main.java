@@ -41,7 +41,12 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             RandomForestRegressor randForest = new RandomForestRegressor(2);
             //player = new Player("Ryan Tannehill", 2023);
             //player.getGAME_LOG();
-
+            for ( String name : wrList ) {
+                player = new Player(name, 2021);
+                System.out.println(name);
+                System.out.println(player.getGAME_LOG().getWeek(3).getFeelsLike() + player.getGAME_LOG().getWeek(3).getHomeTeam());
+            }
+            /*
             double line;
             double pred;
             int act;
@@ -77,7 +82,7 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                     game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar} );
                             act = game.getREC();
                             double conf = Math.abs(pred - line);
-                            if ( conf > 0 ) {
+                            if ( conf < 0.5 ) {
                                 c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
 
                                 double diff = Math.abs(pred - act);
@@ -118,7 +123,7 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             int attOvers = 0;
             int compOvers = 0;
             ArrayList<Integer> actual = new ArrayList<>();
-            for ( int i = 2023; i < 2024; i++) {
+            for ( int i = 2022; i < 2023; i++) {
                 for (String s : wrList) {
                     //System.out.println(s);
                     player = new Player(s, i);
@@ -146,10 +151,9 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                     team.getPassAttPG(), team.getPassTDPG(), team.getPassIntPG(), team.getPassFirstDownsPG(), team.getPenaltiesPG(),
                                     team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getYardsPG(), game.getFeelsLike(), game.getWindSpeed(),
                                     game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar);
-                            System.out.println(formattedString);
                             //String formattedString = String.format("{ %.4f, %.4f, %.4f, %.4f, %.4f },",
                             //       team.getReceptionsPG(), game.getWindSpeed(), game.getFeelsLike(), team.getExpectedPointsPG(), team.getFirstDownsPG());
-                            //System.out.println(formattedString);
+                            System.out.println(formattedString);
                             //System.out.println("indep.add(" + game.getFeelsLike() + ", " + game.getREC() + ");");
                         }
                     }

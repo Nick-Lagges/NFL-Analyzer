@@ -409,7 +409,7 @@ public class PlayerGame {
         this.OFF_SNAP = Double.valueOf(OFF_SNAP.substring(0,OFF_SNAP.length()-1));
     }
 
-    public void generateWeather() throws IOException {
+    public void generateWeather(int year) throws IOException {
         if ( Utils.DOMED_TEAMS.contains(this.getHomeTeam()) ){
             this.setTemperature(70.0);
             this.setDewPoint(0.0);
@@ -428,7 +428,9 @@ public class PlayerGame {
             this.setFeelsLike();
         }
         else {
-            FileReader fileReader = new FileReader(Utils.WEATHER23);
+            FileReader fileReader;
+            if ( year == 2023 ) fileReader = new FileReader(Utils.WEATHER23);
+            else fileReader = new FileReader(Utils.WEATHER22);
             CSVReader csvReader = new CSVReader(fileReader);
             String[] nextRecord;
             // we are going to read data line by line
