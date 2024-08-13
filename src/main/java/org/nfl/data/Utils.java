@@ -28,10 +28,16 @@ public class Utils {
 
     public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeatherRevised2023.csv";
     public final static String WEATHER22 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather2022.csv";
+    public final static String WEATHER21 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather2021.csv";
 
     public final static String RANDOM_FOREST_DATA1 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData1.csv";
     public final static String RANDOM_FOREST_DATA2 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData2.csv";
+    public final static String RANDOM_FOREST_DATA3 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData3.csv";
+    public final static String RANDOM_FOREST_DATA4 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData4.csv";
+
     public final static String DOMED_TEAMS = "cardinals, falcons, cowboys, lions, texans, colts, raiders, chargers, rams, vikings, saints";
+
+    public final static String REC_LINES_2021 = System.getProperty("user.dir") + "\\database\\statistics\\ReceptionLines2021.csv";
 
     public Utils() {
         STAT_TO_ID.put("targets", "targets");

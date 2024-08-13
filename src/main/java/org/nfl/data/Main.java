@@ -37,16 +37,12 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             Player player = null;
             TeamDefense team = null;
             Random rand = new Random();
-            DefenseStats defenseStats = new DefenseStats(2022);
-            RandomForestRegressor randForest = new RandomForestRegressor(2);
-            //player = new Player("Ryan Tannehill", 2023);
+            DefenseStats defenseStats;
+            RandomForestRegressor randForest = new RandomForestRegressor(3);
+            //player = new Player("Amon-Ra St. Brown", 2021);
             //player.getGAME_LOG();
-            for ( String name : wrList ) {
-                player = new Player(name, 2021);
-                System.out.println(name);
-                System.out.println(player.getGAME_LOG().getWeek(3).getFeelsLike() + player.getGAME_LOG().getWeek(3).getHomeTeam());
-            }
-            /*
+
+
             double line;
             double pred;
             int act;
@@ -59,8 +55,9 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             int correctUnders = 0;
             double minPred = 10000;
             double maxPred = -10000;
-            for (int i = 2023; i < 2024; i++) {
+            for (int i = 2021; i < 2024; i++) {
                 SuccessModel model = new SuccessModel(i-1);
+                defenseStats = new DefenseStats(i);
                 for (String name : wrList) {
                     player = new Player(name, i);
                     System.out.println(name);
@@ -73,6 +70,7 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                 team = teamDefense;
                         }
                         line = game.getRecLine();
+
                         if (line != 0.0 && game.getREC() != -1) {
                             pred = randForest.predictDataPoint(new double[]{
                                     team.getReceptionsPG(), team.getPlaysPG(), team.getTargetsPG(), team.getExpectedPointsPG(), team.getPointsPG(),
@@ -81,8 +79,9 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                                     team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getYardsPG(), game.getFeelsLike(), game.getWindSpeed(),
                                     game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar} );
                             act = game.getREC();
+                            //System.out.println(line + " : " + act);
                             double conf = Math.abs(pred - line);
-                            if ( conf < 0.5 ) {
+                            if ( conf > -1 ) {
                                 c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
 
                                 double diff = Math.abs(pred - act);
@@ -116,14 +115,14 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                     }
                 }
             }
-
-
             /*
+
+
             //System.out.println("");
             int attOvers = 0;
             int compOvers = 0;
             ArrayList<Integer> actual = new ArrayList<>();
-            for ( int i = 2022; i < 2023; i++) {
+            for ( int i = 2021; i < 2022; i++) {
                 for (String s : wrList) {
                     //System.out.println(s);
                     player = new Player(s, i);

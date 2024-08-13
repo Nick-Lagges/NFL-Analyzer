@@ -430,7 +430,8 @@ public class PlayerGame {
         else {
             FileReader fileReader;
             if ( year == 2023 ) fileReader = new FileReader(Utils.WEATHER23);
-            else fileReader = new FileReader(Utils.WEATHER22);
+            else if (year == 2022 ) fileReader = new FileReader(Utils.WEATHER22);
+            else fileReader = new FileReader(Utils.WEATHER21);
             CSVReader csvReader = new CSVReader(fileReader);
             String[] nextRecord;
             // we are going to read data line by line

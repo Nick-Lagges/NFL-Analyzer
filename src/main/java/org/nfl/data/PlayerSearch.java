@@ -142,6 +142,7 @@ public class PlayerSearch {
 
     private String handlePathIssue(String path) throws IOException {
         StringBuilder id = new StringBuilder();
+        if ( NAME.equals("DeVonta Smith") ) return "07";
         try {
             StringBuilder testURL = new StringBuilder(path);
             testURL.append("00/gamelog/").append(YEAR).append("/");

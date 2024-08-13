@@ -1,9 +1,11 @@
 package org.nfl.data;
 
+import com.opencsv.CSVReader;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -120,78 +122,87 @@ public class LineSearch {
     }
 
     public void findLines() throws IOException {
-        StringBuilder lineUrl = new StringBuilder(URI);
-        lineUrl.append("/nfl/writenow/player-props/week-");
-        boolean found = false;
-        int week = 1;
-        String yearFind = "&season=" + YEAR;
-        try {
-            while (!found && week < 19) {
-                lineUrl.append(week);
-                Document document = Jsoup.connect(lineUrl.toString()).get();
-                ArrayList<Element> players = document.select("tr").select("a");
-                for (Element e : players) {
-                    if (e.text().equals(PLAYER_NAME)) {
-                        pastLineUrls = e.attributes().get("href");
-                        found = true;
-                        break;
+        if ( YEAR > 2021 ) {
+            StringBuilder lineUrl = new StringBuilder(URI);
+            lineUrl.append("/nfl/writenow/player-props/week-");
+            boolean found = false;
+            int week = 1;
+            String yearFind = "&season=" + YEAR;
+            try {
+                while (!found && week < 19) {
+                    lineUrl.append(week);
+                    Document document = Jsoup.connect(lineUrl.toString()).get();
+                    ArrayList<Element> players = document.select("tr").select("a");
+                    for (Element e : players) {
+                        if (e.text().equals(PLAYER_NAME)) {
+                            pastLineUrls = e.attributes().get("href");
+                            found = true;
+                            break;
+                        }
                     }
+                    if (week > 9) lineUrl.delete(lineUrl.length() - 2, lineUrl.length() - 1);
+                    else lineUrl.deleteCharAt(lineUrl.length() - 1);
+                    week++;
                 }
-                if (week > 9 ) lineUrl.delete(lineUrl.length()-2, lineUrl.length()-1);
-                else lineUrl.deleteCharAt(lineUrl.length()-1);
-                week++;
-            }
-            if ( found ){
-                String url = URI + pastLineUrls;
-                Document playerDoc = Jsoup.connect(url+yearFind).get();
-                Integer currWeek = 0;
-                String weekFinder = "";
-                for ( Element e : playerDoc.select("span[style=\"background-color: transparent;\"]")){
-                    weekFinder = e.select("a").attr("href");
-                    currWeek = Integer.valueOf(weekFinder.substring(weekFinder.lastIndexOf("-")+1));
-                    if ( currWeek > 18 ) continue;
-                    if ( e.text().contains("Receptions") ) {
-                        receptionsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        receptionsLines.remove(currWeek+1);
+                if (found) {
+                    String url = URI + pastLineUrls;
+                    Document playerDoc = Jsoup.connect(url + yearFind).get();
+                    Integer currWeek = 0;
+                    String weekFinder = "";
+                    for (Element e : playerDoc.select("span[style=\"background-color: transparent;\"]")) {
+                        weekFinder = e.select("a").attr("href");
+                        currWeek = Integer.valueOf(weekFinder.substring(weekFinder.lastIndexOf("-") + 1));
+                        if (currWeek > 18) continue;
+                        if (e.text().contains("Receptions")) {
+                            receptionsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            receptionsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Receiving Yards")) {
+                            receivingYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            receivingYardsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Carries")) {
+                            rushingAttemptsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            rushingAttemptsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Rushing Yards")) {
+                            rushingYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            rushingYardsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Completions")) {
+                            completionsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            completionsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Pass Attempts")) {
+                            passAttemptsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            passAttemptsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Passing Yards")) {
+                            passYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            passYardsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("Interceptions")) {
+                            passIntsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            passIntsLines.remove(currWeek + 1);
+                        } else if (e.text().contains("TD Passes")) {
+                            passTDLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
+                            passTDLines.remove(currWeek + 1);
+                        }
                     }
-                    else if ( e.text().contains("Receiving Yards") ) {
-                        receivingYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        receivingYardsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Carries") ) {
-                        rushingAttemptsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        rushingAttemptsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Rushing Yards") ) {
-                        rushingYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        rushingYardsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Completions") ) {
-                        completionsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        completionsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Pass Attempts") ) {
-                        passAttemptsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        passAttemptsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Passing Yards") ) {
-                        passYardsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        passYardsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("Interceptions") ) {
-                        passIntsLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        passIntsLines.remove(currWeek+1);
-                    }
-                    else if ( e.text().contains("TD Passes") ) {
-                        passTDLines.add(currWeek, Double.valueOf(e.text().split("[(]")[0].split("Under")[1]));
-                        passTDLines.remove(currWeek+1);
-                    }
-                }
-            }
-            else throw new IllegalArgumentException("player not found");
+                } else throw new IllegalArgumentException("player not found");
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            FileReader fileReader;
+            if ( YEAR == 2021 ) fileReader = new FileReader(Utils.REC_LINES_2021);
+            else fileReader = new FileReader(Utils.REC_LINES_2021);
+
+            CSVReader csvReader = new CSVReader(fileReader);
+            String[] nextRecord;
+            // we are going to read data line by line
+            while ( (nextRecord = csvReader.readNext()) != null ) {
+                if ( nextRecord[0].equals(PLAYER_NAME) ) {
+                    for ( int i = 1; i < nextRecord.length; i++ ) {
+                        receptionsLines.add(i, Double.valueOf(nextRecord[i]));
+                        receptionsLines.remove(i+1);
+                    }
+                }
+            }
         }
     }
 }
