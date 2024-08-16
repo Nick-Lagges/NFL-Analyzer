@@ -15,6 +15,8 @@ public class Main {
             "Dak Prescott", "Baker Mayfield", "Tua Tagovailoa", "Aaron Rodgers", "Kyler Murray",
             "Trevor Lawrence", "Jalen Hurts", "Ryan Tannehill", "Lamar Jackson", "Daniel Jones" };
 
+    private static String[] qbListTest = { "Justin Fields", "Brock Purdy", "Joe Burrow", "Bryce Young" };
+
     public static void main(String[] args) {
         try {
             /*
@@ -39,9 +41,9 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             Random rand = new Random();
             DefenseStats defenseStats;
             RandomForestRegressor randForest = new RandomForestRegressor(3);
+            //ModelOne model = new ModelOne(2022);
             //player = new Player("Amon-Ra St. Brown", 2021);
             //player.getGAME_LOG();
-
 
             double line;
             double pred;
@@ -55,7 +57,7 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
             int correctUnders = 0;
             double minPred = 10000;
             double maxPred = -10000;
-            for (int i = 2021; i < 2024; i++) {
+            for (int i = 2023; i < 2024; i++) {
                 SuccessModel model = new SuccessModel(i-1);
                 defenseStats = new DefenseStats(i);
                 for (String name : wrList) {
@@ -72,16 +74,17 @@ opp.getScoresPerOffDrivePG -0.09934    0.07071  -1.405 0.161077
                         line = game.getRecLine();
 
                         if (line != 0.0 && game.getREC() != -1) {
-                            pred = randForest.predictDataPoint(new double[]{
+                            /*pred = randForest.predictDataPoint(new double[]{
                                     team.getReceptionsPG(), team.getPlaysPG(), team.getTargetsPG(), team.getExpectedPointsPG(), team.getPointsPG(),
                                     team.getYardsPerPlay(), team.getTurnoversPG(), team.getFumblesPG(), team.getFirstDownsPG(), team.getPassCompsPG(),
                                     team.getPassAttPG(), team.getPassTDPG(), team.getPassIntPG(), team.getPassFirstDownsPG(), team.getPenaltiesPG(),
                                     team.getPenaltyFirstDownsPG(), team.getScoresPerOffDrivePG(), team.getYardsPG(), game.getFeelsLike(), game.getWindSpeed(),
-                                    game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar} );
+                                    game.getWindDirection(), game.getRecLine(), game.getWEEK(), avgRec, avgTar} ); */
+                            pred = model.performModel("receptions", game, avgRec);
                             act = game.getREC();
                             //System.out.println(line + " : " + act);
                             double conf = Math.abs(pred - line);
-                            if ( conf > -1 ) {
+                            if ( conf > -0.5 ) {
                                 c = (((pred > line) && (act > line)) || ((pred < line) && (act < line)));
 
                                 double diff = Math.abs(pred - act);

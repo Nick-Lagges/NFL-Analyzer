@@ -10,20 +10,36 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ModelTesting extends ApplicationFrame {
-    private String[] playerList = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Ja'Marr Chase", "Davante Adams", "Adam Thielen", "Garrett Wilson", "Chris Olave", "Chris Godwin", "Mike Evans", "DeVonta Smith", "Nico Collins", "Amari Cooper", "Jaylen Waddle", "Justin Jefferson" };
+    private final String[] playerList = { "DJ Moore", "AJ Brown", "Keenan Allen", "Brandon Aiyuk", "Tyreek Hill", "CeeDee Lamb", "Michael Pittman", "Stefon Diggs", "Ja'Marr Chase", "Davante Adams", "Adam Thielen", "Garrett Wilson", "Chris Olave", "Chris Godwin", "Mike Evans", "DeVonta Smith", "Nico Collins", "Amari Cooper", "Jaylen Waddle", "Justin Jefferson" };
+    private HashMap<Player, Player> wrToQb= new HashMap();
     private TeamDefense team = null;
-    private DefenseStats defenseStats = new DefenseStats(2022);
+    private final DefenseStats defenseStats = new DefenseStats(2022);
 
     public ModelTesting() throws IOException, InterruptedException {
         super("testing");
-
+        wrToQb.put(new Player("DJ Moore", 2023), new Player("Justin Fields", 2023));
+        wrToQb.put(new Player("AJ Brown", 2023), new Player("Jalen Hurts", 2023));
+        wrToQb.put(new Player("Brandon Aiyuk", 2023), new Player("Brock Purdy", 2023));
+        wrToQb.put(new Player("Tyreek Hill", 2023), new Player("Tua Tagovailoa", 2023));
+        wrToQb.put(new Player("CeeDee Lamb", 2023), new Player("Dak Prescott", 2023));
+        wrToQb.put(new Player("Stefon Diggs", 2023), new Player("Josh Allen", 2023));
+        wrToQb.put(new Player("Ja'Marr Chase", 2023), new Player("Joe Burrow", 2023));
+        wrToQb.put(new Player("Adam Thielen", 2023), new Player("Bryce Young", 2023));
+        wrToQb.put(new Player("Chris Olave", 2023), new Player("Derek Carr", 2023));
+        wrToQb.put(new Player("Chris Godwin", 2023), new Player("Baker Mayfield", 2023));
+        wrToQb.put(new Player("Mike Evans", 2023), new Player("Baker Mayfield", 2023));
+        wrToQb.put(new Player("DeVonta Smith", 2023), new Player("Jalen Hurts", 2023));
+        wrToQb.put(new Player("Jaylen Waddle", 2023), new Player("Tua Tagovailoa", 2023));
         JFreeChart barChart;
         barChart = ChartFactory.createScatterPlot(
-                "Incorrect Predictions",
-                "Model Prediction",
-                "Line",
+                "line vs recPG",
+                "line",
+                "recPG",
                 createDataset(),
                 PlotOrientation.VERTICAL,
                 true, true, false);
@@ -34,29 +50,29 @@ public class ModelTesting extends ApplicationFrame {
     XYDataset createDataset() throws IOException, InterruptedException {
         XYSeriesCollection dataset = new XYSeriesCollection();
 
-        XYSeries correct = new XYSeries("correct");
-        XYSeries incorrect = new XYSeries("incorrect");
+        XYSeries over = new XYSeries("over");
+        XYSeries under = new XYSeries("under");
 
-        correct = modelTester(correct, true);
-        incorrect = modelTester(incorrect, false);
+        over = moreTests(over, true);
+        under = moreTests(under, false);
 
-        dataset.addSeries(incorrect);
-        dataset.addSeries(correct);
+        dataset.addSeries(under);
+        dataset.addSeries(over);
 
         return dataset;
     }
 
-    public XYSeries windVsRec(XYSeries indep) throws IOException, InterruptedException {
-        Player player = null;
-        for ( String name : playerList ) {
-            player = new Player(name, 2023);
+    public XYSeries moreTests(XYSeries indep, boolean over) throws IOException, InterruptedException {
+        for (Player player : wrToQb.keySet() ) {
+            System.out.println(player.NAME);
             for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
                 for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES() ) {
                     if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
                         team = teamDefense;
                 }
-                if ((game.getRecLine() != 0) && game.getREC() != -1) {
-                    indep.add(game.getWindSpeed(), game.getREC());
+                if ((game.getRecLine() != 0) && game.getREC() != -1 && wrToQb.get(player).getGAME_LOG().GAME_LOG.size() > game.getWEEK() ) {
+                    if ( over && game.getREC() > game.getRecLine() ) indep.add(game.getRecLine(), wrToQb.get(player).getGAME_LOG().getWeek(game.getWEEK()).getPassCompLine());
+                    else if ( (! over) && game.getREC() < game.getRecLine() ) indep.add(game.getRecLine(), wrToQb.get(player).getGAME_LOG().getWeek(game.getWEEK()).getPassCompLine());
                 }
             }
 
@@ -64,13 +80,34 @@ public class ModelTesting extends ApplicationFrame {
         return indep;
     }
 
-    public XYSeries feelsLikeVsRec(XYSeries indep) throws IOException, InterruptedException {
+    public XYSeries windVsRec(XYSeries indep, boolean over) throws IOException, InterruptedException {
+        Player player = null;
+        for ( String name : playerList ) {
+            player = new Player(name, 2023);
+            System.out.println(player.NAME);
+            for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
+                for (TeamDefense teamDefense : defenseStats.getNFL_DEFENSES() ) {
+                    if (teamDefense.getTeamName().toLowerCase().contains(Utils.ABBR_TO_TEAM.get(game.getOPPONENT())))
+                        team = teamDefense;
+                }
+                if ((game.getRecLine() != 0) && game.getREC() != -1) {
+                    if ( over && game.getREC() > game.getRecLine() ) indep.add(game.getRecLine(), team.getReceptionsPG());
+                    else if ( (! over) && game.getREC() < game.getRecLine() ) indep.add(game.getRecLine(), team.getReceptionsPG());
+                }
+            }
+
+        }
+        return indep;
+    }
+
+    public XYSeries feelsLikeVsRec(XYSeries indep, boolean over) throws IOException, InterruptedException {
         Player player = null;
         for ( String name : playerList ) {
             player = new Player(name, 2023);
             for (PlayerGame game : player.getGAME_LOG().GAME_LOG) {
                 if ((game.getRecLine() != 0) && game.getREC() != -1) {
-                    indep.add(game.getFeelsLike(), game.getREC());
+                    if ( over && game.getREC() > game.getRecLine() ) indep.add(game.getFeelsLike(), game.getWindSpeed());
+                    else if ( (! over) && game.getREC() < game.getRecLine() ) indep.add(game.getFeelsLike(), game.getWindSpeed());
                 }
             }
 
