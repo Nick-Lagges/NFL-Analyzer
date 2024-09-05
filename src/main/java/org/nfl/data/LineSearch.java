@@ -129,20 +129,34 @@ public class LineSearch {
             int week = 1;
             String yearFind = "&season=" + YEAR;
             try {
-                while (!found && week < 19) {
-                    lineUrl.append(week);
-                    Document document = Jsoup.connect(lineUrl.toString()).get();
-                    ArrayList<Element> players = document.select("tr").select("a");
-                    for (Element e : players) {
-                        if (e.text().equals(PLAYER_NAME)) {
-                            pastLineUrls = e.attributes().get("href");
-                            found = true;
-                            break;
+                if ( PLAYER_NAME.equals("Tom Brady") && YEAR == 2022) {
+                    pastLineUrls = "/nfl/writenow/player-props/2276-tom-brady&season=2022";
+                    found = true;
+                } else if (PLAYER_NAME.equals("Jacoby Brissett") && YEAR == 2022) {
+                    pastLineUrls = "/nfl/writenow/player-props/6207-jacoby-brissett&season=2022";
+                    found = true;
+                } else if (PLAYER_NAME.equals("Matt Ryan") && YEAR == 2022) {
+                    pastLineUrls = "/nfl/writenow/player-props/2859-matt-ryan&season=2022";
+                    found = true;
+                } else {
+                    while (!found && week < 19) {
+                        lineUrl.append(week);
+                        Document document = Jsoup.connect(lineUrl.toString()).get();
+                        ArrayList<Element> players = document.select("tr").select("a");
+                        for (Element e : players) {
+                            if (e.text().equals(PLAYER_NAME)) {
+                                pastLineUrls = e.attributes().get("href");
+                                found = true;
+                                break;
+                            }
                         }
+                        if (week > 9) {
+                            lineUrl.deleteCharAt(lineUrl.length() - 1);
+                            lineUrl.deleteCharAt(lineUrl.length() - 1);
+                        }
+                        else lineUrl.deleteCharAt(lineUrl.length() - 1);
+                        week++;
                     }
-                    if (week > 9) lineUrl.delete(lineUrl.length() - 2, lineUrl.length() - 1);
-                    else lineUrl.deleteCharAt(lineUrl.length() - 1);
-                    week++;
                 }
                 if (found) {
                     String url = URI + pastLineUrls;

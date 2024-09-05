@@ -6,6 +6,7 @@ import java.util.Map;
 public class Utils {
     public final static Map<String,String> STAT_TO_ID = new HashMap<>();
     public final static Map<String,String> TEAM_TO_LOCATOR = new HashMap<>();
+    public final static Map<String,String[]> TEAM_PLAYERS = new HashMap<>();
     public static Map<String,String> ABBR_TO_TEAM = new HashMap<>();
     public final static String RECEIVING23 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2023.csv";
     public final static String RECEIVING22 = System.getProperty("user.dir") + "\\database\\statistics\\Receiving2022.csv";
@@ -29,6 +30,9 @@ public class Utils {
     public final static String WEATHER23 = System.getProperty("user.dir") + "\\database\\weather\\gameWeatherRevised2023.csv";
     public final static String WEATHER22 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather2022.csv";
     public final static String WEATHER21 = System.getProperty("user.dir") + "\\database\\weather\\gameWeather2021.csv";
+
+    public final static String OVER_UNDERS2022 = System.getProperty("user.dir") + "\\database\\statistics\\overUnders2022.csv";
+    public final static String OVER_UNDERS2023 = System.getProperty("user.dir") + "\\database\\statistics\\overUnders2023.csv";
 
     public final static String RANDOM_FOREST_DATA1 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData1.csv";
     public final static String RANDOM_FOREST_DATA2 = System.getProperty("user.dir") + "\\database\\statistics\\randomForestData2.csv";
@@ -127,6 +131,5 @@ public class Utils {
         ABBR_TO_TEAM.put("tam", "buccaneers");
         ABBR_TO_TEAM.put("ten", "titans");
         ABBR_TO_TEAM.put("was", "commanders");
-
     }
 }

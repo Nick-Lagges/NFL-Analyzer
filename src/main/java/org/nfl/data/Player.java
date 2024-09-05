@@ -266,6 +266,7 @@ public class Player {
             if ( playerGame.getHomeORAway().equals("home") ) playerGame.setHomeTeam(TEAM);
             else playerGame.setHomeTeam(Utils.ABBR_TO_TEAM.get(playerGame.getOPPONENT()));
             playerGame.generateWeather(YEAR);
+            playerGame.generateOverUnder(YEAR);
             GAME_LOG.addGame(playerGame);
         }
     }

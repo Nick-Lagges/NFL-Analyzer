@@ -52,8 +52,26 @@ public class PlayerGame {
     private double cloudCover;
     private String weatherType;
     private String conditions;
-
     private double feelsLike;
+
+    private int overUnder;
+    private double spread;
+
+    public double getSpread() {
+        return spread;
+    }
+
+    public void setSpread(double spread) {
+        this.spread = spread;
+    }
+
+    public int getOverUnder() {
+        return overUnder;
+    }
+
+    public void setOverUnder(int overUnder) {
+        this.overUnder = overUnder;
+    }
 
     public PlayerGame(String playerName) {
     }
@@ -407,6 +425,28 @@ public class PlayerGame {
 
     public void setOFF_SNAP(String OFF_SNAP) {
         this.OFF_SNAP = Double.valueOf(OFF_SNAP.substring(0,OFF_SNAP.length()-1));
+    }
+
+    public void generateOverUnder(int year) throws IOException {
+        FileReader fileReader;
+        if (year == 2023) fileReader = new FileReader(Utils.OVER_UNDERS2023);
+        else if (year == 2022) fileReader = new FileReader(Utils.OVER_UNDERS2022);
+        else fileReader = new FileReader(Utils.WEATHER21);
+        CSVReader csvReader = new CSVReader(fileReader);
+        String[] nextRecord;
+        // we are going to read data line by line
+        while ((nextRecord = csvReader.readNext()) != null) {
+            if ( nextRecord[2].contains(getDate()) && nextRecord[1].contains(String.valueOf(WEEK)) && nextRecord[3].toLowerCase().contains(getHomeTeam()) ) {
+                setOverUnder(Integer.valueOf(nextRecord[4]));
+                if ( getHomeTeam().equals(Utils.ABBR_TO_TEAM.get(getOPPONENT())) ) setSpread(Double.valueOf(nextRecord[5]));
+                else {
+                    double gameSpread = Double.valueOf(nextRecord[5]);
+                    gameSpread *= -1;
+                    setSpread(gameSpread);
+                }
+                break;
+            }
+        }
     }
 
     public void generateWeather(int year) throws IOException {

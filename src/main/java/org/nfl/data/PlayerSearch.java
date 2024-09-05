@@ -54,7 +54,7 @@ public class PlayerSearch {
         //Thread.sleep(500 + rand.nextInt(1500));
     }
 
-    private void makeFile(Document doc, String filename) throws IOException {
+    private void makeFile(Document doc, String filename) throws IOException, InterruptedException {
         File file = new File(filename);
         BufferedWriter out = new BufferedWriter(new FileWriter(file,true));
         try{
@@ -62,10 +62,12 @@ public class PlayerSearch {
             out.newLine();
         } finally {
             out.close();
+            Thread.sleep(rand.nextInt(8000,11000));
         }
     }
 
     private String getPosition() {
+        if ( NAME.equals("Josh Downs") ) return "Position: WR";
         String positionInfo;
         positionInfo = DOCUMENT.getElementById("meta").select("p").get(1).text();
         return positionInfo;
@@ -134,6 +136,8 @@ public class PlayerSearch {
         StringBuilder path = new StringBuilder().append(URI);
         if ( NAME.equals("DJ Moore") ) path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].charAt(0) + ".");
         else if (NAME.equals("Amon-Ra St. Brown") ) path.append("S/StxxAm");
+        else if (NAME.equals("Tank Dell") ) path.append("D/DellNa");
+        else if (NAME.equals("Aidan O'Connell") ) path.append("O/OConAi");
         else  path.append(nameList[1].charAt(0) + "/" + nameList[1].substring(0,4) + nameList[0].substring(0,2));
         path.append(handlePathIssue(path.toString()));
         path.append("/gamelog/" + YEAR + "/");
@@ -143,6 +147,12 @@ public class PlayerSearch {
     private String handlePathIssue(String path) throws IOException {
         StringBuilder id = new StringBuilder();
         if ( NAME.equals("DeVonta Smith") ) return "07";
+        else if (NAME.equals("Marquise Brown") ) return "04";
+        else if (NAME.equals("Sam LaPorta") ) return "01";
+        else if (NAME.equals("Jake Browning") ) return "08";
+        else if (NAME.equals("Jakobi Meyers") ) return "01";
+        else if (NAME.equals("Josh Downs") ) return "00";
+        else if (NAME.equals("Mac Jones") ) return "05";
         try {
             StringBuilder testURL = new StringBuilder(path);
             testURL.append("00/gamelog/").append(YEAR).append("/");
